@@ -2,4 +2,12 @@ extends layout
 
 block content
 
-  h2 The last message received was: #{last_message}
+  h1 Send a test message
+
+  h2 The last message sent was: #{last_message}
+
+  form(method='POST' action='/lightmessage')
+    div.input
+      textarea(name="message", cols="40", rows="5")
+    div.actions
+      input(type="submit", value="TEST")
