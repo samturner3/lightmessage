@@ -36,26 +36,21 @@ app.use(function(req, res, next) {
   next(createError(404));
 });
 
-var Matrix = require("easybotics-rpi-rgb-led-matrix");
-led = new Matrix(32, 32, 1, 4, 50, "adafruit-hat-pwm"); //this might be different for you
+// var Matrix = require("easybotics-rpi-rgb-led-matrix");
+// led = new Matrix(32, 32, 1, 4, 50, "adafruit-hat-pwm"); //this might be different for you
 
-const input = moment().format('h:mm:ss a'); //wherever you get the input from
-// const font  =  './5x8.bdf';
-const font  =  __dirname + '/repo/node-rpi-rgb-led-matrix/external/matrix/fonts/' + "5x8.bdf";
+// const input = 'input'; //wherever you get the input from
+// // const font  =  './5x8.bdf';
+// const font  =  __dirname + '/repo/node-rpi-rgb-led-matrix/external/matrix/fonts/' + "5x8.bdf";
 
-console.log('font', font);
-// console.log('__dirname', __dirname);
-//should be a function that calculates the postition based on timestamp
-//and increments the x position
+// console.log('font', font);
+// // console.log('__dirname', __dirname);
+// //should be a function that calculates the postition based on timestamp
+// //and increments the x position
 
-// led.drawText(70, 20, 255, 255, 255, 'input', font);
+// // led.drawText(70, 20, 255, 255, 255, 'input', font);
 
-setInterval(function(){
-  led.clear();
-  led.drawText(0, 0, moment().format('h:mm:ss a'), font, 255, 0, 255); 
-  led.update();
-  console.log('tick');
-}, 1000)
+// led.drawText(0, 0, 'index', font, 255, 255, 255); 
 
 // led.drawText(0, 0, input, font, 255, 0, 255); led.update();
 // led.fill(255, 50, 100);
