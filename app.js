@@ -39,7 +39,7 @@ app.use(function(req, res, next) {
 var Matrix = require("easybotics-rpi-rgb-led-matrix");
 led = new Matrix(32, 32, 1, 4, 50, "adafruit-hat-pwm"); //this might be different for you
 
-const input = "hello world!"; //wherever you get the input from
+const input = moment().format('h:mm:ss a'); //wherever you get the input from
 // const font  =  './5x8.bdf';
 const font  =  __dirname + '/repo/node-rpi-rgb-led-matrix/external/matrix/fonts/' + "5x8.bdf";
 
@@ -47,17 +47,17 @@ console.log('font', font);
 // console.log('__dirname', __dirname);
 //should be a function that calculates the postition based on timestamp
 //and increments the x position
-var x = 0;
-var y = 0;
-const width = led.getWidth();
-const height = led.getHeight();
 
 // led.drawText(70, 20, 255, 255, 255, 'input', font);
-led.drawText(32, 0, 255, 255, 255, 'input', font);
-led.update();
 
+setInterval(function(){
+  led.clear();
+  led.drawText(0, 0, moment().format('h:mm:ss a'), font, 255, 0, 255); 
+  led.update();
+  console.log('tick');
+}, 1000)
 
-led.drawText(32, 0, 'text motherfucker!', font, 255, 255, 255); led.update();
+// led.drawText(0, 0, input, font, 255, 0, 255); led.update();
 // led.fill(255, 50, 100);
 // led.setPixel(0, 0, 0, 50, 255);
 // led.update();
