@@ -10,8 +10,10 @@
     "axios": "^0.18.0",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
+    "easybotics-rpi-rgb-led-matrix": "file:./repo/node-rpi-rgb-led-matrix",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "moment": "^2.24.0",
     "morgan": "~1.9.0",
     "pug": "2.0.0-beta11"
   },
