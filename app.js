@@ -6,8 +6,15 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var lightMessageRouter = require('./routes/lightmessage');
+var modeChangeRouter = require('./routes/modeChange');
+var brightnessChangeRouter = require('./routes/brightnessChange');
 
 var app = express();
+
+globalMode = {
+  mode: 'off',
+  brightness: 100,
+};
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,6 +28,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/lightmessage', lightMessageRouter);
+app.use('/modeChange', modeChangeRouter);
+app.use('/brightnessChange', brightnessChangeRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
