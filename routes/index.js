@@ -7,6 +7,7 @@ router.get('/', function (req, res, next) {
 
 router.post('/', function (req, res, next) {
     console.log(req.query.message);
+    if (process.env.HEADLESS === 'true'){
     var Matrix = require("easybotics-rgb-led-matrix");
     led = new Matrix(32, 64, 1, 1, 100, "adafruit-hat"); //this might be different for you
 
@@ -22,6 +23,7 @@ router.post('/', function (req, res, next) {
     led.update();
     while(true){};
     res.end();
+    }
 });
 
 module.exports = router;
