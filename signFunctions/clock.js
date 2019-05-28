@@ -1,16 +1,14 @@
 var moment = require('moment');
-var Matrix = require("easybotics-rpi-rgb-led-matrix");
-
-const font  =  __dirname + '/../repo/node-rpi-rgb-led-matrix/external/matrix/fonts/' + "5x8.bdf";
-
-console.log('font', font);
-
+const newLed = require('../newLed');
 
 module.exports = () => {
-    led = new Matrix(32, 32, 1, 4, globalMode.brightness, "adafruit-hat-pwm"); //this might be different for you
+    if (!led) {
+        newLed();
+    }
+    const font  =  __dirname + '/../repo/node-rpi-rgb-led-matrix/external/matrix/fonts/' + "5x8.bdf";
     led.fill(255, 50, 100);
     led.update();
-    setInterval(function(){
+    clockTicking = setInterval(function(){
         led.clear();
         led.drawText(0, 0, moment().format('h:mm:ss a'), font, 255, 0, 0); 
         led.update();
