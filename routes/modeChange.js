@@ -6,7 +6,7 @@ router.post('/', function(req, res, next) {
   console.log('Mode Change!' + JSON.stringify(req.body));
   globalMode.mode = req.body.ModeChangeButton;
   if (req.body.ModeChangeButton === 'Weather') {
-    handelWeather.handelWeather();
+    handelWeather();
   }
   res.redirect('/');
 });

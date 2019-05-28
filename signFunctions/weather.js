@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-module.exports.handelWeather = () => {
+module.exports = () => {
     axios.get('http://reg.bom.gov.au/fwo/IDN60901/IDN60901.94767.json')
     .then(function (response) {
       // handle success
