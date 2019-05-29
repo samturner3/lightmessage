@@ -3,18 +3,25 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var Matrix = require("easybotics-rpi-rgb-led-matrix");
 
 var indexRouter = require('./routes/index');
 var lightMessageRouter = require('./routes/lightmessage');
 var modeChangeRouter = require('./routes/modeChange');
 var brightnessChangeRouter = require('./routes/brightnessChange');
+const handelClock = require('./signFunctions/clock');
 
 var app = express();
 
 globalMode = {
   mode: 'off',
-  brightness: 100,
+  brightness: 50,
+  led: null,
 };
+
+globalMode.led = new Matrix(32, 32, 1, 4, globalMode.brightness, "adafruit-hat-pwm"); //this might be different for you
+
+handelClock();
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

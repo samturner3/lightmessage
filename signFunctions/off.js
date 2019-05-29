@@ -2,7 +2,7 @@ var Matrix = require("easybotics-rpi-rgb-led-matrix");
 
 module.exports = () => {
     clearInterval(clockTicking);
-    led.clear();
-    led.update();
-    led = null;
+    console.log('globalMode.led', JSON.stringify(globalMode.led));
+    globalMode.led.clear();
+    globalMode.led.update();
 };
