@@ -1,5 +1,4 @@
 var moment = require('moment');
-const newLed = require('../newLed');
 
 module.exports = () => {
     const font  =  __dirname + '/../repo/node-rpi-rgb-led-matrix/external/matrix/fonts/' + "9x15.bdf";

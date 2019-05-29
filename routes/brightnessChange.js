@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-const newLed = require('../newLed');
 
 router.post('/', function(req, res, next) {
   console.log('Brightness Change!' + JSON.stringify(req.body));
@@ -8,7 +7,6 @@ router.post('/', function(req, res, next) {
     switch(req.body.BrightnessChangeButton) {
       case 'Max':
         globalMode.brightness = 100;
-        globalMode.led.brightness(100);
         break;
       case '++':
         globalMode.brightness <= 90 ? (globalMode.brightness = globalMode.brightness + 10) : globalMode.brightness = 100;
