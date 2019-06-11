@@ -1,13 +1,11 @@
 var moment = require('moment');
 
-module.exports = () => {
+module.exports = (format) => {
     const font  =  __dirname + '/../fonts/' + "9x15.bdf";
-    globalMode.led.drawText(0, 0, moment().format('h:mm:ss a'), font, 255, 0, 0); 
-    globalMode.led.update();
     clockTicking = setInterval(function(){
         globalMode.led.clear();
-        globalMode.led.drawText(0, 0, moment().format('h:mm:ss a'), font, 255, 0, 0); 
+        globalMode.led.drawText(0, 0, moment().format(format), font, 255, 0, 0); 
         globalMode.led.update();
-        console.log('tick', moment().format('h:mm:ss a'));
+        console.log('tick', moment().format(format));
       }, 1000)
 };

@@ -15,13 +15,13 @@ var app = express();
 
 globalMode = {
   mode: 'off',
-  brightness: 50,
+  brightness: 20,
   led: null,
 };
 
 globalMode.led = new Matrix(32, 32, 1, 4, globalMode.brightness, "adafruit-hat-pwm"); //this might be different for you
 
-handelClock();
+handelClock('h:mm a');
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

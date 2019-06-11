@@ -11,7 +11,7 @@ router.post('/', function(req, res, next) {
     handelWeather();
   }
   if (req.body.ModeChangeButton === 'Clock') {
-    handelClock();
+    handelClock('h:mm a');
   }
   if (req.body.ModeChangeButton === 'Off') {
     handelOff();
