@@ -3,7 +3,6 @@ extends layout
 block content
 
   h2 The mode state is: #{global_mode}
-  h4 The brightness is: #{global_brightness}
 
   h2 Change Sign Mode
 
@@ -13,19 +12,3 @@ block content
       input(type="submit", value="Weather", name="ModeChangeButton")
       input(type="submit", value="Morning", name="ModeChangeButton")
       input(type="submit", value="Off", name="ModeChangeButton")
-
-  h2 Change Sign Brightness
-
-  form(method='POST' action='/brightnessChange')
-    div.actions
-      input(type="submit", value="Min", name="BrightnessChangeButton")
-      input(type="submit", value="--", name="BrightnessChangeButton")
-      input(type="submit", value="-", name="BrightnessChangeButton")
-      input(type="submit", value="+", name="BrightnessChangeButton")
-      input(type="submit", value="++", name="BrightnessChangeButton")
-      input(type="submit", value="Max", name="BrightnessChangeButton")
-
-  form(method='POST' action='/brightnessChange')
-    div.actions
-      input(type="range", name="BrightnessSlider" min="0" max="100" step="1" value=global_brightness)
-      input(type="submit", value="Submit Slider", name="SliderSubmitButton")

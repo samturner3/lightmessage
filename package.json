@@ -3,23 +3,34 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "DEV=false node ./bin/www",
-    "dev": "DEV=true nodemon ./bin/www"
+    "start": "node ./bin/www",
+    "dev": "nodemon ./bin/www",
+    "debug": "node --inspect-brk=192.168.1.50:9229 ./bin/www"
   },
   "dependencies": {
-    "axios": "^0.18.0",
+    "async": "^3.0.1",
+    "axios": "^0.18.1",
     "cookie-parser": "~1.4.3",
     "debug": "~2.6.9",
     "easybotics-rpi-rgb-led-matrix": "^0.3.0",
     "express": "~4.16.0",
     "http-errors": "~1.6.2",
+    "i2c-bus": "^4.0.9",
+    "mcp9808-temperature-sensor": "^1.0.8",
     "moment": "^2.24.0",
     "morgan": "~1.9.0",
     "onoff": "^4.1.1",
     "pug": "2.0.0-beta11",
-    "word-clock": "^1.0.3"
+    "word-clock": "^1.0.3",
+    "xml2js": "^0.4.19"
   },
   "devDependencies": {
+    "eslint": "^5.16.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-promise": "^4.1.1",
+    "eslint-plugin-standard": "^4.0.0",
     "nodemon": "^1.19.1"
   }
 }
