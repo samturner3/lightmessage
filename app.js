@@ -21,6 +21,11 @@ globalMode = {
   brightness: 100,
   led: null,
   luxAuto: false,
+  messages: {
+    newMessage: false,
+    message: null,
+    loop: null
+  },
   tick: {
     enabled: true,
     clock: true,

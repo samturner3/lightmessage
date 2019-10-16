@@ -48,9 +48,9 @@ const updateLoop = function () {
   setTimeout(async function () {
     globalMode.led.clear()
 
-    if (scrollMessage && newMessage) {
-      await scrollAMessage(scrollMessage);
-      newMessage = false;
+    if (globalMode.messages.message && globalMode.messages.newMessage) {
+      await scrollAMessage(globalMode.messages.message, 10 ,globalMode.messages.loop);
+      globalMode.messages.newMessage = false;
     }
 
     drawStaticMessages()
@@ -110,7 +110,7 @@ const updateLux = async function () {
   }, 1000)
 }
 
-const scrollAMessage = async function (message, speed = 5, loops = 2, y = 0, includeStaticMessages = true) {
+const scrollAMessage = async function (message, speed = 5, loops, y = 0, includeStaticMessages = true) {
 
   var startX = (32*4);
   var endX = Math.abs(message.length * 6) * -1;
@@ -126,7 +126,7 @@ const scrollAMessage = async function (message, speed = 5, loops = 2, y = 0, inc
   async function func2 () {
     console.log('Started func2');
     for (let x = startX; x > endX ; x--) {        
-        console.log('runn', x)
+        // console.log('runn', x)
         globalMode.led.clear()
         globalMode.led.drawText(x, y, message, font2, 0, 255, 0)
         if (includeStaticMessages) {
