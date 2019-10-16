@@ -12,13 +12,13 @@ var brightnessChangeRouter = require('./routes/brightnessChange')
 // const handelClock = require('./signFunctions/clockTick');
 // const readTemp = require('./signFunctions/tempTick');
 const tick = require('./tick')
-const lux = require('./lux')
+// const lux = require('./lux');
 
 var app = express()
 
-let globalMode = {
+globalMode = {
   mode: 'off',
-  initialBrightness: 20,
+  brightness: 100,
   led: null,
   tick: {
     enabled: true,
@@ -28,7 +28,7 @@ let globalMode = {
   }
 }
 
-globalMode.led = new Matrix(32, 32, 1, 4, globalMode.initialBrightness, 'adafruit-hat-pwm')
+globalMode.led = new Matrix(32, 32, 1, 4, globalMode.brightness, 'adafruit-hat-pwm') // this might be different for you
 
 // handelClock('h:mm a');
 tick()
