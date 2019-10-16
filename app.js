@@ -20,6 +20,7 @@ globalMode = {
   mode: 'off',
   brightness: 100,
   led: null,
+  luxAuto: false,
   tick: {
     enabled: true,
     clock: true,

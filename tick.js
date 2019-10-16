@@ -30,7 +30,9 @@ const updateLoop = function () {
   setTimeout(async function () {
     globalMode.led.clear()
 
-    brightnessChangeLux(tickLux)
+    if (globalMode.luxAuto){
+      brightnessChangeLux(tickLux)
+    }
 
     if (tickTime) globalMode.led.drawText(0, 0, tickTime, font1, 255, 0, 0)
     else clockWidth = 0
@@ -51,7 +53,7 @@ const updateLoop = function () {
 
 const clockLoop = function () {
   setTimeout(async function () {
-    console.log('time updated')
+    // console.log('time updated')
     tickTime = moment().format('h:mm a')
     if (globalMode.tick.clock) {
       clockLoop()

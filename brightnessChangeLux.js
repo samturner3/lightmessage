@@ -6,7 +6,7 @@ module.exports = function (lux) {
 }
 
 const brightnessChange = function (lux) {
-  console.log('Brightness Change LUX!' + lux)
+  // console.log('Brightness Change LUX!' + lux)
 
   if (lux > 2500) { globalMode.led.brightness(100) } else if (lux > 2000) globalMode.led.brightness(60)
   else if (lux > 1500) globalMode.led.brightness(50)

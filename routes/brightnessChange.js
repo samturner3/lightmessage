@@ -24,7 +24,7 @@ router.post('/', function (req, res, next) {
         globalMode.brightness = 1
         break
       default:
-        globalMode.brightness = 100
+        globalMode.brightness = 20
     }
   } else if (req.body.BrightnessSlider) {
     globalMode.brightness = req.body.BrightnessSlider
