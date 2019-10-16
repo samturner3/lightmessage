@@ -3,7 +3,11 @@ extends layout
 block content
 
   h2 The mode state is: #{global_mode}
-  h4 The brightness is: #{global_brightness}
+  h4 The brightness is: #{global_brightness}%
+  if globalMode_luxAuto
+    h4 The lux mode is: auto
+  else
+    h4 The lux mode is: manual
 
   h2 Change Sign Mode
 

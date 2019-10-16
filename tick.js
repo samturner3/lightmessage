@@ -18,6 +18,8 @@ const LUX_ADDR = 0x10
 let tickTime
 let tickTemp
 let tickLux
+let scrollMessage = 'hello world'
+let newMessage = true;
 
 let clockWidth = 72
 const widthSpacing = 10
@@ -26,24 +28,33 @@ const font1 = __dirname + '/fonts/' + '9x15.bdf'
 const font2 = __dirname + '/fonts/' + '6x12.bdf'
 const font3 = __dirname + '/fonts/' + '6x10.bdf'
 
+const drawStaticMessages = function () {
+  if (globalMode.luxAuto){
+    brightnessChangeLux(tickLux)
+  }
+  if (tickTime) globalMode.led.drawText(0, 0, tickTime, font1, 255, 0, 0)
+  else clockWidth = 0
+  if (tickTemp) globalMode.led.drawText((clockWidth + (tickTime ? widthSpacing : 0)), 2, tickTemp, font2, 0, 255, 255)
+  if (globalMode.tick.lux) {
+    if (tickLux) {
+      globalMode.led.drawText(0, 10, tickLux.toString(), font2, 0, 255, 0)
+    } else {
+      globalMode.led.drawText(0, 10, 'no lux data', font2, 0, 255, 0)
+    }
+  }
+}
+
 const updateLoop = function () {
   setTimeout(async function () {
     globalMode.led.clear()
 
-    if (globalMode.luxAuto){
-      brightnessChangeLux(tickLux)
+    if (scrollMessage && newMessage) {
+      await scrollAMessage(scrollMessage);
+      newMessage = false;
     }
 
-    if (tickTime) globalMode.led.drawText(0, 0, tickTime, font1, 255, 0, 0)
-    else clockWidth = 0
-    if (tickTemp) globalMode.led.drawText((clockWidth + (tickTime ? widthSpacing : 0)), 2, tickTemp, font2, 0, 255, 255)
-    if (globalMode.tick.lux) {
-      if (tickLux) {
-        globalMode.led.drawText(0, 10, tickLux.toString(), font2, 0, 255, 0)
-      } else {
-        globalMode.led.drawText(0, 10, 'no lux data', font2, 0, 255, 0)
-      }
-    }
+    drawStaticMessages()
+
     globalMode.led.update()
     if (globalMode.tick.enabled) {
       updateLoop()
@@ -99,11 +110,50 @@ const updateLux = async function () {
   }, 1000)
 }
 
+const scrollAMessage = async function (message, speed = 5, loops = 2, y = 0, includeStaticMessages = true) {
+
+  var startX = (32*4);
+  var endX = Math.abs(message.length * 6) * -1;
+
+  async function func1() {
+    for (var i = 0; i < loops; i++) {
+      console.log(`func1 waiting for func2 #${i + 1}`);
+      await func2(); // await in loop until func2() completed 
+      console.log(`Finished iteration ${i} for func1`);
+    }
+  }
+
+  async function func2 () {
+    console.log('Started func2');
+    for (let x = startX; x > endX ; x--) {        
+        console.log('runn', x)
+        globalMode.led.clear()
+        globalMode.led.drawText(x, y, message, font2, 0, 255, 0)
+        if (includeStaticMessages) {
+          drawStaticMessages();
+        }
+        globalMode.led.update()
+        await delay(speed);
+    }
+  }
+
+  function delay(speed) {
+    return new Promise(resolve => setTimeout(resolve, speed));
+  }
+
+  await func1()
+  console.log('finished')
+  
+
+}
+
 module.exports = async function () {
   clockLoop()
   updateTemp()
   updateLoop()
   // updateLux()
+  // await scrollAMessage('hello world')
+  // console.log('finished scrollAMessage')
 }
 // module.exports = async function(){
 //     let temp = await require('./signFunctions/tempTick');
@@ -114,13 +164,6 @@ module.exports = async function () {
 //         }, 1000)
 //     }
 // };
-
-// (function myLoop () {
-//     setTimeout(function () {
-//        alert('hello');          //  your code here
-//        if (true) myLoop();      //  decrement i and call myLoop again if i > 0
-//     }, 1000)
-//  })();
 
 // async function tick() {
 //     // globalMode.led.clear(); // Clear
