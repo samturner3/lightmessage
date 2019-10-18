@@ -6,6 +6,7 @@ const async = require('async')
 const i2c = require('i2c-bus')
 
 const brightnessChangeLux = require('./brightnessChangeLux')
+const updateStaticWeather = require('./signFunctions/updateStaticweather')
 
 const LUX_ADDR = 0x10
 
@@ -63,17 +64,35 @@ const getFontDimentions = function(fontIndex) {
 
 
 const drawStaticMessages = function () {
+  // run update functions
   if (globalMode.luxAuto){
     brightnessChangeLux(tickLux)
   }
+  if (globalMode.tick.weather.temp === true || globalMode.tick.weather.conditions === true) updateStaticWeather();
+
+  // Draw stuff
   if (tickTime) globalMode.led.drawText(0, 0, tickTime, fonts[15], 255, 0, 0)
   else clockWidth = 0
-  if (tickTemp) globalMode.led.drawText((screenWidth - (tickTemp.length * getFontDimentions(14).x)), 0, tickTemp, fonts[14], 0, 0, 255)
+  if (tickTemp) {
+    globalMode.led.drawText((screenWidth - (tickTemp.length * getFontDimentions(5).x) - (3 * getFontDimentions(1).x)), 4, 'in ', fonts[1], 100, 10, 255)
+    globalMode.led.drawText((screenWidth - (tickTemp.length * getFontDimentions(5).x)), 0, tickTemp, fonts[5], 0, 0, 255)
+  }
   if (globalMode.tick.lux) {
     if (tickLux) {
       globalMode.led.drawText(0, 10, tickLux.toString(), fonts[9], 0, 255, 0)
     } else {
       globalMode.led.drawText(0, 10, 'no lux data', fonts[9], 0, 255, 0)
+    }
+  }
+  if (globalMode.tick.weather.temp) {
+    if (globalMode.static.weather.outSideTemp !== null ) {
+      globalMode.led.drawText((screenWidth - (globalMode.static.weather.outSideTemp.length * getFontDimentions(5).x) - (4 * getFontDimentions(1).x)), 14, 'out ', fonts[1], 100, 10, 255)
+      globalMode.led.drawText((screenWidth - (globalMode.static.weather.outSideTemp.length * getFontDimentions(5).x)), 10, globalMode.static.weather.outSideTemp, fonts[5], 0, 0, 255)
+    }
+  }
+  if (globalMode.tick.weather.conditions) {
+    if (globalMode.static.weather.outSideConditions !== null) {
+      globalMode.led.drawText((screenWidth - (globalMode.static.weather.outSideConditions.length * getFontDimentions(5).x)), 20, globalMode.static.weather.outSideConditions, fonts[5], 0, 0, 255)
     }
   }
 }

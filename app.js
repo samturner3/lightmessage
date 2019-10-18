@@ -30,7 +30,19 @@ globalMode = {
     enabled: true,
     clock: true,
     temp: true,
+    weather: {
+      temp: true,
+      conditions: true
+    },
     lux: false
+  },
+  static: {
+    weather: {
+      lastUpdated: null,
+      outSideTemp: null,
+      outSideConditions: null,
+      outSideWeatherLocation: null,
+    }
   }
 }
 
@@ -54,6 +66,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/', indexRouter)
 app.use('/lightmessage', lightMessageRouter)
 app.use('/modeChange', modeChangeRouter)
+app.use('/brightnessChange', brightnessChangeRouter)
 app.use('/brightnessChange', brightnessChangeRouter)
 
 // catch 404 and forward to error handler
