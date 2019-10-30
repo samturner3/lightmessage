@@ -38,6 +38,7 @@ globalMode = {
   },
   static: {
     weather: {
+      error: true,
       lastUpdated: null,
       outSideTemp: null,
       outSideConditions: null,

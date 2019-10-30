@@ -95,6 +95,13 @@ const drawStaticMessages = function () {
       globalMode.led.drawText((screenWidth - (globalMode.static.weather.outSideConditions.length * getFontDimentions(5).x)), 20, globalMode.static.weather.outSideConditions, fonts[5], 0, 0, 255)
     }
   }
+  // Draw errors
+  // if (globalMode.tick.weather.temp === true || globalMode.tick.weather.conditions === true) {
+    if (globalMode.static.weather.error === true) {
+      const x = 40;
+      globalMode.led.setPixel((globalMode.led.getWidth() - 1), 12, 255, 0, 0);
+    }
+  // }
 }
 
 const updateLoop = function () {
@@ -127,13 +134,13 @@ const clockLoop = function () {
 const updateTemp = async function () {
   let sensor = await Mcp9808.open({ i2cBusNumber: 1, i2cAddress: 0x18 })
   let temp = await sensor.temperature()
-  console.log('temp updated', temp.celsius + '°C')
-  tickTemp = parseFloat(temp.celsius.toFixed(1)) + '°C'
+  console.log(moment().format(), 'inside temp updated', temp.celsius + '°C')
+  tickTemp = Math.round(temp.celsius) + '°C'
   setTimeout(function () {
     if (globalMode.tick.temp) {
       updateTemp()
     } else tickTemp = undefined
-  }, 60000)
+  }, 600000)
 }
 
 const updateLux = async function () {
