@@ -29,6 +29,7 @@ globalMode = {
   tick: {
     enabled: true,
     clock: true,
+    UtcClock: true,
     temp: true,
     weather: {
       temp: true,

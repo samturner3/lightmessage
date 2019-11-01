@@ -17,6 +17,7 @@ const LUX_ADDR = 0x10
 //     console.log('tick');
 // });
 let tickTime
+let tickTimeUTC
 let tickTemp
 let tickLux
 let scrollMessage = 'hello world'
@@ -62,6 +63,16 @@ const getFontDimentions = function(fontIndex) {
   return({x,y})
 }
 
+const getFontDimentionsSpacing = function(pos, fontIndex, string, additonalSpace) {
+  const x = fonts[fontIndex].split('/fonts/')[1].split('x')[0].replace(/\D/g,'');
+  const y = fonts[fontIndex].split('/fonts/')[1].split('x')[1].replace(/\D/g,'');
+  // console.log('x:', x, ' y:',y)
+
+  if (pos === 'x')
+    return(x * string.length + additonalSpace * x);
+  if (pos ==='y')
+    return(y * string.length + additonalSpace * y);
+}
 
 const drawStaticMessages = function () {
   // run update functions
@@ -73,6 +84,10 @@ const drawStaticMessages = function () {
   // Draw stuff
   if (tickTime) globalMode.led.drawText(0, 0, tickTime, fonts[15], 255, 0, 0)
   else clockWidth = 0
+  if (tickTimeUTC) {
+    globalMode.led.drawText(0, 14, tickTimeUTC, fonts[5], 255, 0, 0)
+    globalMode.led.drawText((getFontDimentionsSpacing('x',5,tickTimeUTC,0.5)), 19, 'UTC', fonts[1], 100, 10, 255)
+  }
   if (tickTemp) {
     globalMode.led.drawText((screenWidth - (tickTemp.length * getFontDimentions(5).x) - (3 * getFontDimentions(1).x)), 4, 'in ', fonts[1], 100, 10, 255)
     globalMode.led.drawText((screenWidth - (tickTemp.length * getFontDimentions(5).x)), 0, tickTemp, fonts[5], 0, 0, 255)
@@ -129,6 +144,15 @@ const clockLoop = function () {
     if (globalMode.tick.clock) {
       clockLoop()
     } else tickTime = undefined
+  }, 1000)
+}
+const clockUTCLoop = function () {
+  setTimeout(async function () {
+    // console.log('time updated')
+    tickTimeUTC = moment().utc().format('HH:mm')
+    if (globalMode.tick.UtcClock) {
+      clockUTCLoop()
+    } else tickTimeUTC = undefined
   }, 1000)
 }
 const updateTemp = async function () {
@@ -209,6 +233,7 @@ const scrollAMessage = async function (message, speed = 5, loops, y = 12, includ
 
 module.exports = async function () {
   clockLoop()
+  clockUTCLoop()
   updateTemp()
   updateLoop()
   // updateLux()
