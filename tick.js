@@ -86,7 +86,7 @@ const drawStaticMessages = function () {
   else clockWidth = 0
   if (tickTimeUTC) {
     globalMode.led.drawText(0, 14, tickTimeUTC, fonts[5], 255, 0, 0)
-    globalMode.led.drawText((getFontDimentionsSpacing('x',5,tickTimeUTC,0.5)), 19, 'UTC', fonts[1], 100, 10, 255)
+    globalMode.led.drawText((getFontDimentionsSpacing('x',5,tickTimeUTC,0.5)), 18, 'UTC', fonts[1], 100, 10, 255)
   }
   if (tickTemp) {
     globalMode.led.drawText((screenWidth - (tickTemp.length * getFontDimentions(5).x) - (3 * getFontDimentions(1).x)), 4, 'in ', fonts[1], 100, 10, 255)
