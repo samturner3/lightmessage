@@ -1,9 +1,11 @@
-var express = require('express')
-var router = express.Router()
+const express = require('express');
 
-router.get('/', function (req, res, next) {
-  console.log('home', globalMode)
-  res.render('index', { global_mode: globalMode.mode, global_brightness: globalMode.brightness, globalMode_luxAuto: globalMode.luxAuto })
-})
+const router = express.Router();
 
-module.exports = router
+router.get('/', (req, res, next) => {
+  console.log('home', globalMode);
+  res.render('index', { global_mode: JSON.stringify(globalMode, null, '\t'), global_mode_obj: globalMode, global_brightness: globalMode.brightness, globalMode_luxAuto: globalMode.luxAuto });
+  next();
+});
+
+module.exports = router;
