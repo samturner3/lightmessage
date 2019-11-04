@@ -5,7 +5,7 @@
   "scripts": {
     "start": "node ./bin/www",
     "dev": "nodemon ./bin/www",
-    "debug": "node --inspect-brk=192.168.1.50:9229 ./bin/www"
+    "debug": "node --inspect ./bin/www"
   },
   "dependencies": {
     "async": "^3.0.1",
@@ -24,6 +24,9 @@
     "word-clock": "^1.0.3"
   },
   "devDependencies": {
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.18.2",
     "nodemon": "^1.19.1"
   }
 }
