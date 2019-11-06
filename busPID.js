@@ -6,7 +6,8 @@ const scrollAMessage = require('./scrollAMessage');
 const scrollMessageInPlace = require('./scrollMessageInPlace');
 const drawBuffer = require('./drawBuffer');
 
-const stopId = '2035193'; // Home bus
+// const stopId = '2035193'; // Home bus
+const stopId = '200073'; // St James
 // const stopId = '2000392'; // Townhall platform 2
 let busData;
 let alerts;
@@ -107,7 +108,7 @@ module.exports = async function busPID() {
         let delayDisplayColours = [255, 255, 255];
         let delayFactor = 'min';
         if (delayDeparture !== null && delayDeparture !== undefined) {
-          delayFactor = `${Math.round((delayDeparture / 60)).toString()}m`;
+          delayFactor = `${Math.abs(Math.round((delayDeparture / 60))).toString()}m`;
           if (delayDeparture > -60 && delayDeparture < 60) { delayDisplay = 'ON TIME'; delayDisplayColours = [0, 255, 0]; } else if (delayDeparture > 60) { delayDisplay = `${delayFactor} LATE`; delayDisplayColours = [255, 0, 0]; } else if (delayDeparture < -60) { delayDisplay = `${delayFactor} EARLY`; delayDisplayColours = [0, 0, 255]; }
         }
         globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, '', (0 + col)), line, route, fonts.fontFiles[5], 255, 0, 0]);
@@ -143,7 +144,7 @@ module.exports = async function busPID() {
           if (alerts[x].active === true) {
             const createdTime = moment.unix(alerts[x].createdTime);
             console.log(alerts[x]);
-            await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} ${createdTime.format('h:mma')} ${alerts[x].description}`, 70, 0, 12, 10);
+            await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - ${createdTime.format('h:mma')} - ${alerts[x].description}`, 70, 0, 12, 10);
           // await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - (${moment.unix(alerts[x].activePeriods.start).format('h:mma')} - ${moment.unix(alerts[x].activePeriods.end).format('h:mma')}) ${alerts[x].description}`, 70, 0, 12, 10);=
           }
           await scrollMessageInPlace(`${moment().format('h:mma')}`, 70, 0, 12, 10, 15, false, true, 255, 255, 0);
