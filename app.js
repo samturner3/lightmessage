@@ -15,6 +15,7 @@ const tick = require('./tick');
 const app = express();
 
 globalMode = {
+  buffer: [],
   mode: 'off',
   brightness: 100,
   led: null,
@@ -24,9 +25,9 @@ globalMode = {
     message: null,
     loop: null,
   },
-  busPIDMode: false,
+  busPIDMode: true,
   tick: {
-    enabled: false,
+    enabled: true,
     clock: true,
     UtcClock: true,
     temp: true,
@@ -54,6 +55,7 @@ globalMode = {
       error: true,
       lastUpdated: null,
       fetched: false,
+      alertsLastScrolled: null,
     },
   },
 };

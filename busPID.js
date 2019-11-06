@@ -3,6 +3,8 @@ const moment = require('moment');
 
 const fonts = require('./fonts');
 const scrollAMessage = require('./scrollAMessage');
+const scrollMessageInPlace = require('./scrollMessageInPlace');
+const drawBuffer = require('./drawBuffer');
 
 const stopId = '2035193'; // Home bus
 // const stopId = '2000392'; // Townhall platform 2
@@ -58,16 +60,16 @@ const getBusData = async function getBusData() {
       // console.log(response.data);
       // console.log(response.data.response.departures);
       busData = response.data.response.departures;
+      alerts = response.data.response.alerts;
       // alerts = response.data.response.alerts;
-      // alerts = response.data.response.alerts;
-      alerts = [];
+      // alerts = ['hi'];
       globalMode.static.busPid.fetched = true;
       // console.log('Updated bus data', globalMode.static.busPid.lastUpdated);
     } catch (error) {
       console.log(moment().format(), error);
       globalMode.static.busPid.error = true;
     }
-  } //else //console.log('no need to update bus data', globalMode.static.busPid.lastUpdated, moment().unix(), moment().unix() - globalMode.static.busPid.lastUpdated);
+  } // else //console.log('no need to update bus data', globalMode.static.busPid.lastUpdated, moment().unix(), moment().unix() - globalMode.static.busPid.lastUpdated);
 };
 
 
@@ -93,17 +95,17 @@ module.exports = async function busPID() {
         // console.log(sortedBusData[x].tripInstance.trip.route.name, sortedBusData[x].stopTimeInstance.departure.time, fromNow(sortedBusData[x].stopTimeInstance.departure.time), sortedPass, col);
         const timeTill = fromNow(sortedBusData[x].stopTimeInstance.departure.time);
         const route = sortedBusData[x].tripInstance.trip.route.name;
-        globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, '', (0 + col)), line, route, fonts.fontFiles[5], 255, 0, 0);
-        if (timeTill.length === 1) { globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 255, 255, 255); }
+        globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, '', (0 + col)), line, route, fonts.fontFiles[5], 255, 0, 0]);
+        if (timeTill.length === 1) { globalMode.buffer.push(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 255, 255, 255); }
         if (timeTill.length === 2) {
-          globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0);
-          globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, route + timeTill[0], (col + 1)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255);
+          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
+          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route + timeTill[0], (col + 1)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
         }
         if (timeTill.length === 4) {
-          globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0);
-          globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, route + timeTill[0], (col - 0.5)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255);
-          globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, route + timeTill[1] + timeTill[2], (col + 0.5)), line, timeTill[2], fonts.fontFiles[5], 0, 255, 0);
-          globalMode.led.drawText(fonts.getFontDimentionsSpacing('x', 5, route + timeTill[1] + timeTill[2] + timeTill[3], (col - 1.5)), (line + 3), timeTill[3], fonts.fontFiles[2], 255, 255, 255);
+          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
+          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}`, (col)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
+          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}${timeTill[1]}`, (col)), line, timeTill[2], fonts.fontFiles[5], 0, 255, 0]);
+          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]} ${timeTill[1]} ${timeTill[2]}`, (col - 1.5)), (line + 3), timeTill[3], fonts.fontFiles[2], 255, 255, 255]);
         }
 
         line += fontHeight + 5;
@@ -111,21 +113,39 @@ module.exports = async function busPID() {
       }
     }
     if (alerts.length >= 1) {
-      for (let x = 0; x < alerts.length; x++) {
-        await scrollAMessage(`${alerts[x].header.toUpperCase()} - ${alerts[x].description}`, 5, 1, 1, false);
+      if (globalMode.static.busPid.lastUpdated === null || Math.abs(moment().unix() - globalMode.static.busPid.alertsLastScrolled > 120)) { // in seconds
+        for (let x = 0; x < alerts.length; x++) {
+          if (alerts[x].active === true) {
+            const createdTime = moment.unix(alerts[x].createdTime);
+            console.log(alerts[x]);
+            await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} ${createdTime.format('h:mma')} ${alerts[x].description}`, 70, 0, 12, 10);
+          // await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - (${moment.unix(alerts[x].activePeriods.start).format('h:mma')} - ${moment.unix(alerts[x].activePeriods.end).format('h:mma')}) ${alerts[x].description}`, 70, 0, 12, 10);=
+          }
+          await scrollMessageInPlace(`${moment().format('h:mma')}`, 70, 0, 12, 10, 15, false, true, 255, 255, 0);
+          globalMode.static.busPid.alertsLastScrolled = moment().unix();
+        }
+        globalMode.buffer = [];
+      } else {
+        globalMode.led.drawText(60, 0, moment().format('h:mma'), fonts.fontFiles[15], 255, 255, 0);
+        // globalMode.buffer.push(45, 0, 'Town Hall Plat 2', fonts.fontFiles[1], 100, 255, 255);
+        drawBuffer();
+        globalMode.led.update();
+        globalMode.buffer = [];
       }
     } else {
-      globalMode.led.drawText(60, 0, moment().format('HH:mm'), fonts.fontFiles[5], 100, 255, 255);
-      // globalMode.led.drawText(45, 0, 'Town Hall Plat 2', fonts.fontFiles[1], 100, 255, 255);
+      globalMode.led.drawText(60, 0, moment().format('h:mma'), fonts.fontFiles[15], 255, 255, 0);
+      // globalMode.buffer.push(45, 0, 'Town Hall Plat 2', fonts.fontFiles[1], 100, 255, 255);
+      drawBuffer();
+      globalMode.led.update();
+      globalMode.buffer = [];
     }
-    globalMode.led.update();
   }
 
   async function func1() {
     while (globalMode.busPIDMode === true) {
       globalMode.led.clear();
       getBusData();
-      if (globalMode.static.busPid.fetched === true) displayBusData();
+      if (globalMode.static.busPid.fetched === true) await displayBusData();
       else {
         globalMode.led.drawText(0, 0, 'Loading Data...', fonts.fontFiles[4], 100, 255, 255);
         globalMode.led.update();

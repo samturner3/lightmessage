@@ -1,7 +1,7 @@
 const fonts = require('./fonts');
 const drawStaticMessages = require('./drawStaticMessages');
 
-module.exports = async function scrollAMessage(message, speed = 5, loops, y = 12, includeStaticMessages = true) {
+module.exports = async function scrollAMessage(message, speed = 5, y = 12, includeStaticMessages = false) {
   const startX = (32 * 4);
   const endX = Math.abs(message.length * 6) * -1;
 
@@ -24,7 +24,7 @@ module.exports = async function scrollAMessage(message, speed = 5, loops, y = 12
   }
 
   async function func1() {
-    for (let i = 0; i < loops; i++) {
+    for (let i = 0; i < 1; i++) {
       console.log(`func1 waiting for func2 #${i + 1}`);
       await func2(); // await in loop until func2() completed
       console.log(`Finished iteration ${i} for func1`);
