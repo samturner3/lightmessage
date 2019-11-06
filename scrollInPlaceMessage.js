@@ -3,9 +3,9 @@ const drawStaticMessages = require('./drawStaticMessages');
 
 module.exports = async function scrollAMessage(message, speed = 500, loops, y = 12, includeStaticMessages = false, fontIndex = 5) {
   const placeEndX = 50;
-  const visibleLengthChars = 10;
-  const startX = globalMode.led.getWidth();
-  const endXa = Math.abs((message.length + 1) * fonts.getFontDimentions(fontIndex).x) * -1;
+  const visibleLengthChars = 6;
+  const startX = placeEndX + visibleLengthChars * fonts.getFontDimentions(fontIndex).x;
+  const endXa = Math.abs((message.length + 1 + visibleLengthChars) * fonts.getFontDimentions(fontIndex).x) * -1;
   const endX = placeEndX + endXa;
 
 
@@ -20,8 +20,11 @@ module.exports = async function scrollAMessage(message, speed = 500, loops, y = 
 
   async function func2() {
     console.log('Started func2');
-    let mystring = message;
+    let mystring = ' '.repeat(visibleLengthChars);
     let removed = 0;
+    const mainMessage = ' '.repeat(visibleLengthChars) + message;
+    const messageArray = mainMessage.split('');
+    mystring = mystring.substring(0, (visibleLengthChars + removed));
     for (let x = startX; x > endX; x--) {
       // console.log('runn', x)
       // if (x <= placeEndX) {
@@ -31,8 +34,9 @@ module.exports = async function scrollAMessage(message, speed = 500, loops, y = 
         // mystring = mystring.replaceAt(0, ' ');
         // mystring = mystring.substr(0, 0) + ' ' + mystring.substr(0 + mystring.length);
         // mystring = message.substring(removed, mystring.length);
-        mystring = ' '.repeat(removed) + message.substring(removed, mystring.length);
-        mystring = mystring.substring(0, visibleLengthChars) + ' '.repeat(message.length - visibleLengthChars + removed);
+        mystring = ' '.repeat(removed) + mainMessage.substring(removed, mystring.length);
+        mystring = mystring.substring(0, (visibleLengthChars + removed));
+        if (messageArray[visibleLengthChars + removed] !== undefined) mystring += messageArray[visibleLengthChars + removed];
         removed++;
         console.log('>', mystring, '<');
         console.log(mystring.length);
@@ -42,7 +46,10 @@ module.exports = async function scrollAMessage(message, speed = 500, loops, y = 
       //   mystring = mystring.substring(1);
       // }
       globalMode.led.clear();
+      // if (removed > 0) globalMode.led.drawText(x, y, mystring, fonts.fontFiles[fontIndex], 0, 255, 0);
       globalMode.led.drawText(x, y, mystring, fonts.fontFiles[fontIndex], 0, 255, 0);
+      // globalMode.led.drawLine(endX, 0, endX, 64, 255, 0, 0);
+      // globalMode.led.drawLine(x, y, mystring, fonts.fontFiles[fontIndex], 0, 255, 0);
       if (includeStaticMessages) {
         drawStaticMessages();
       }
