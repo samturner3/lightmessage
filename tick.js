@@ -1,5 +1,6 @@
 // Run something every second
-const scrollAMessage = require('./scrollAMessage');
+// const scrollAMessage = require('./scrollAMessage');
+const scrollMessageInPlace = require('./scrollMessageInPlace');
 const busPID = require('./busPID');
 const drawStaticMessages = require('./drawStaticMessages');
 
@@ -12,7 +13,9 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
     globalMode.led.clear();
 
     if (globalMode.messages.message && globalMode.messages.newMessage) { // Scroll Message
-      await scrollAMessage(globalMode.messages.message, 10, globalMode.messages.loop);
+      for (let i = 0; i < globalMode.messages.loop; i++) {
+        await scrollMessageInPlace(globalMode.messages.message, 5);
+      }
       globalMode.messages.newMessage = false;
     } else if (globalMode.busPIDMode) { // Bus PID mode
       await busPID();
