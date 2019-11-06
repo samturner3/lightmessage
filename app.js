@@ -56,6 +56,8 @@ globalMode = {
       lastUpdated: null,
       fetched: false,
       alertsLastScrolled: null,
+      routeTimeDisplayChangedLast: null,
+      displayMode: 'time',
     },
   },
 };

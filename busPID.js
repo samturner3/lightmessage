@@ -60,9 +60,9 @@ const getBusData = async function getBusData() {
       // console.log(response.data);
       // console.log(response.data.response.departures);
       busData = response.data.response.departures;
-      alerts = response.data.response.alerts;
       // alerts = response.data.response.alerts;
-      // alerts = ['hi'];
+      alerts = response.data.response.alerts;
+      // alerts = [];
       globalMode.static.busPid.fetched = true;
       // console.log('Updated bus data', globalMode.static.busPid.lastUpdated);
     } catch (error) {
@@ -88,6 +88,12 @@ module.exports = async function busPID() {
     const sortedBusData = busData.sort(compare);
     let col = 0;
     let sortedPass = 0;
+    if (globalMode.static.busPid.routeTimeDisplayChangedLast === null || Math.abs(moment().unix() - globalMode.static.busPid.routeTimeDisplayChangedLast > 1)) {
+      console.log('displayMode', globalMode.static.busPid.displayMode);
+      if (globalMode.static.busPid.displayMode === 'time') { globalMode.static.busPid.displayMode = 'countDown'; } else if (globalMode.static.busPid.displayMode === 'countDown') { globalMode.static.busPid.displayMode = 'delay'; } else { globalMode.static.busPid.displayMode = 'time'; }
+      // if (globalMode.static.busPid.displayMode === 1) { globalMode.static.busPid.displayMode = 2; } else if (globalMode.static.busPid.displayMode === 2) { globalMode.static.busPid.displayMode = 3; } else if (globalMode.static.busPid.displayMode === 3) { globalMode.static.busPid.displayMode = 1; } else globalMode.static.busPid.displayMode = 1;
+      globalMode.static.busPid.routeTimeDisplayChangedLast = moment().unix();
+    }
     // console.log(alerts);
     for (let x = 0; x < sortedBusData.length; x++) {
       if (sortedBusData[x].stopTimeInstance.departure.time > moment().unix()) {
@@ -95,17 +101,36 @@ module.exports = async function busPID() {
         // console.log(sortedBusData[x].tripInstance.trip.route.name, sortedBusData[x].stopTimeInstance.departure.time, fromNow(sortedBusData[x].stopTimeInstance.departure.time), sortedPass, col);
         const timeTill = fromNow(sortedBusData[x].stopTimeInstance.departure.time);
         const route = sortedBusData[x].tripInstance.trip.route.name;
+        const departureTime = moment.unix(sortedBusData[x].stopTimeInstance.departure.time).format('h:mma');
+        const delayDeparture = sortedBusData[x].stopTimeInstance.departure.delay ? sortedBusData[x].stopTimeInstance.departure.delay : null;
+        let delayDisplay;
+        let delayDisplayColours = [255, 255, 255];
+        let delayFactor = 'min';
+        if (delayDeparture !== null && delayDeparture !== undefined) {
+          delayFactor = `${Math.round((delayDeparture / 60)).toString()}m`;
+          if (delayDeparture > -60 && delayDeparture < 60) { delayDisplay = 'ON TIME'; delayDisplayColours = [0, 255, 0]; } else if (delayDeparture > 60) { delayDisplay = `${delayFactor} LATE`; delayDisplayColours = [255, 0, 0]; } else if (delayDeparture < -60) { delayDisplay = `${delayFactor} EARLY`; delayDisplayColours = [0, 0, 255]; }
+        }
         globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, '', (0 + col)), line, route, fonts.fontFiles[5], 255, 0, 0]);
         if (timeTill.length === 1) { globalMode.buffer.push(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 255, 255, 255); }
         if (timeTill.length === 2) {
-          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
-          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route + timeTill[0], (col + 1)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
+          if (globalMode.static.busPid.displayMode === 'countDown') {
+            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
+            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route + timeTill[0], (col + 1)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
+          } else if (globalMode.static.busPid.displayMode === 'time') {
+            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), departureTime, fonts.fontFiles[2], 0, 255, 0]);
+          } else if (globalMode.static.busPid.displayMode === 'delay') {
+            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), delayDisplay, fonts.fontFiles[2], delayDisplayColours[0], delayDisplayColours[1], delayDisplayColours[2]]);
+          }
         }
         if (timeTill.length === 4) {
-          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
-          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}`, (col)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
-          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}${timeTill[1]}`, (col)), line, timeTill[2], fonts.fontFiles[5], 0, 255, 0]);
-          globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]} ${timeTill[1]} ${timeTill[2]}`, (col - 1.5)), (line + 3), timeTill[3], fonts.fontFiles[2], 255, 255, 255]);
+          if (globalMode.static.busPid.displayMode === 'countDown') {
+            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
+            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}`, (col)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
+            // globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}${timeTill[1]}`, (col)), line, timeTill[2], fonts.fontFiles[5], 0, 255, 0]);
+            // globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]} ${timeTill[1]} ${timeTill[2]}`, (col - 1.5)), (line + 3), timeTill[3], fonts.fontFiles[2], 255, 255, 255]);
+          } else if (globalMode.static.busPid.displayMode === 'time') {
+            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), departureTime, fonts.fontFiles[2], 0, 255, 0]);
+          }
         }
 
         line += fontHeight + 5;
@@ -113,7 +138,7 @@ module.exports = async function busPID() {
       }
     }
     if (alerts.length >= 1) {
-      if (globalMode.static.busPid.lastUpdated === null || Math.abs(moment().unix() - globalMode.static.busPid.alertsLastScrolled > 120)) { // in seconds
+      if (globalMode.static.busPid.alertsLastScrolled === null || Math.abs(moment().unix() - globalMode.static.busPid.alertsLastScrolled > 120)) { // in seconds
         for (let x = 0; x < alerts.length; x++) {
           if (alerts[x].active === true) {
             const createdTime = moment.unix(alerts[x].createdTime);
