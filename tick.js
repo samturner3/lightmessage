@@ -1,5 +1,6 @@
 // Run something every second
 const scrollAMessage = require('./scrollAMessage');
+const scrollInPlace = require('./scrollInPlaceMessage');
 const drawStaticMessages = require('./drawStaticMessages');
 
 const clockLoop = require('./clockLoop');
@@ -11,7 +12,7 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
     globalMode.led.clear();
 
     if (globalMode.messages.message && globalMode.messages.newMessage) { // Scroll Message
-      await scrollAMessage(globalMode.messages.message, 10, globalMode.messages.loop);
+      await scrollInPlace(globalMode.messages.message, 10, globalMode.messages.loop);
       globalMode.messages.newMessage = false;
     }
 

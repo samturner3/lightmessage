@@ -14,10 +14,10 @@ module.exports = async function scrollAMessage(message, speed = 5, loops, y = 12
     for (let x = startX; x > endX; x--) {
       // console.log('runn', x)
       globalMode.led.clear();
-      globalMode.led.drawText(x, y, message, fonts.fontFiles[3], 0, 255, 0);
       if (includeStaticMessages) {
         drawStaticMessages();
       }
+      globalMode.led.drawText(x, y, message, fonts.fontFiles[3], 0, 255, 0);
       globalMode.led.update();
       await delay(speed);
     }
