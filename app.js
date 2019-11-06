@@ -26,7 +26,7 @@ globalMode = {
   },
   busPIDMode: true,
   tick: {
-    enabled: true,
+    enabled: false,
     clock: true,
     UtcClock: true,
     temp: true,
@@ -49,6 +49,11 @@ globalMode = {
       outSideTemp: null,
       outSideConditions: null,
       outSideWeatherLocation: null,
+    },
+    busPid: {
+      error: true,
+      lastUpdated: null,
+      fetched: false,
     },
   },
 };

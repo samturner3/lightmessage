@@ -14,16 +14,14 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
     if (globalMode.messages.message && globalMode.messages.newMessage) { // Scroll Message
       await scrollAMessage(globalMode.messages.message, 10, globalMode.messages.loop);
       globalMode.messages.newMessage = false;
-    }
-
-    if (globalMode.busPIDMode) { // Bus PID mode
+    } else if (globalMode.busPIDMode) { // Bus PID mode
       await busPID();
-      globalMode.busPIDMode = false;
+      // globalMode.busPIDMode = false;
+    } else {
+      drawStaticMessages();
+      globalMode.led.update();
     }
 
-    drawStaticMessages();
-
-    globalMode.led.update();
 
     if (globalMode.tick.enabled) {
       updateLoop();
