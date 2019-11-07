@@ -1,0 +1,126 @@
+{
+	"buffer": [
+		{
+			"x": 0,
+			"y": 0,
+			"text": "2:49 pm",
+			"font": "/home/pi/lightmessage/fonts/8x13B.bdf",
+			"r": 255,
+			"g": 0,
+			"b": 0
+		},
+		{
+			"x": 0,
+			"y": 11,
+			"text": "03:49",
+			"font": "/home/pi/lightmessage/fonts/6x12.bdf",
+			"r": 255,
+			"g": 0,
+			"b": 0
+		},
+		{
+			"x": 33,
+			"y": 15,
+			"text": "UTC",
+			"font": "/home/pi/lightmessage/fonts/5x7.bdf",
+			"r": 100,
+			"g": 10,
+			"b": 255
+		},
+		{
+			"x": 0,
+			"y": 21,
+			"text": "Thursday 7th Nov 2019",
+			"font": "/home/pi/lightmessage/fonts/6x12.bdf",
+			"r": 0,
+			"g": 255,
+			"b": 100
+		},
+		{
+			"x": 89,
+			"y": 4,
+			"text": "in ",
+			"font": "/home/pi/lightmessage/fonts/5x7.bdf",
+			"r": 100,
+			"g": 10,
+			"b": 255
+		},
+		{
+			"x": 104,
+			"y": 0,
+			"text": "26°C",
+			"font": "/home/pi/lightmessage/fonts/6x12.bdf",
+			"r": 0,
+			"g": 0,
+			"b": 255
+		},
+		{
+			"x": 84,
+			"y": 14,
+			"text": "out ",
+			"font": "/home/pi/lightmessage/fonts/5x7.bdf",
+			"r": 100,
+			"g": 10,
+			"b": 255,
+			"id": "temp-out"
+		},
+		{
+			"x": 104,
+			"y": 10,
+			"text": "30°C",
+			"font": "/home/pi/lightmessage/fonts/6x12.bdf",
+			"r": 0,
+			"g": 0,
+			"b": 255,
+			"id": "temp-out"
+		}
+	],
+	"mode": "off",
+	"brightness": 100,
+	"led": {},
+	"luxAuto": false,
+	"messages": {
+		"newMessage": false,
+		"message": null,
+		"loop": null
+	},
+	"busPIDMode": false,
+	"tick": {
+		"enabled": true,
+		"clock": true,
+		"UtcClock": true,
+		"date": true,
+		"temp": true,
+		"weather": {
+			"temp": true,
+			"conditions": false,
+			"forecast": true
+		},
+		"lux": false,
+		"values": {
+			"tickTime": "2:49 pm",
+			"tickTimeUTC": "03:49",
+			"tickDate": "Thursday 7th Nov 2019",
+			"tickTemp": "26°C",
+			"tickLux": null
+		}
+	},
+	"static": {
+		"weather": {
+			"error": false,
+			"lastUpdated": 1573098530,
+			"forecastLastScrolled": 1573098542,
+			"outSideTemp": "30°C",
+			"outSideConditions": "clear sky",
+			"outSideWeatherLocation": "City of Sydney"
+		},
+		"busPid": {
+			"error": true,
+			"lastUpdated": null,
+			"fetched": false,
+			"alertsLastScrolled": null,
+			"routeTimeDisplayChangedLast": null,
+			"displayMode": "time"
+		}
+	}
+}

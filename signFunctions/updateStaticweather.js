@@ -1,9 +1,11 @@
 const axios = require('axios');
 const moment = require('moment');
 
-module.exports = (req, res) => {
+const scrollMessageInPlace = require('../scrollMessageInPlace');
+
+module.exports = async (req, res) => {
   if (globalMode.tick.weather.temp === true || globalMode.tick.weather.conditions === true) {
-    if (globalMode.static.weather.lastUpdated === null || Math.abs(globalMode.static.weather.lastUpdated - moment().unix() > 600)) {
+    if (globalMode.static.weather.lastUpdated === null || Math.abs(moment().unix() - globalMode.static.weather.lastUpdated > 600)) {
       axios.get('http://api.openweathermap.org/data/2.5/weather', {
         params: {
           id: '6619279',

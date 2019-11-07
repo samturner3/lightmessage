@@ -1,5 +1,7 @@
 module.exports = async function drawBuffer() {
   globalMode.buffer.forEach((item) => {
-    globalMode.led.drawText(item[0], item[1], item[2], item[3], item[4], item[5], item[6]);
+    globalMode.led.drawText(item.x, item.y, item.text, item.font, item.r, item.g, item.b);
   });
 };
+
+// drawText (x, y, text, font, r, g, b)

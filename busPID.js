@@ -5,6 +5,7 @@ const fonts = require('./fonts');
 const scrollAMessage = require('./scrollAMessage');
 const scrollMessageInPlace = require('./scrollMessageInPlace');
 const drawBuffer = require('./drawBuffer');
+const BufferItem = require('./bufferItem');
 
 // const stopId = '2035193'; // Home bus
 const stopId = '200073'; // St James
@@ -111,26 +112,26 @@ module.exports = async function busPID() {
           delayFactor = `${Math.abs(Math.round((delayDeparture / 60))).toString()}m`;
           if (delayDeparture > -60 && delayDeparture < 60) { delayDisplay = 'ON TIME'; delayDisplayColours = [0, 255, 0]; } else if (delayDeparture > 60) { delayDisplay = `${delayFactor} LATE`; delayDisplayColours = [255, 0, 0]; } else if (delayDeparture < -60) { delayDisplay = `${delayFactor} EARLY`; delayDisplayColours = [0, 0, 255]; }
         }
-        globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, '', (0 + col)), line, route, fonts.fontFiles[5], 255, 0, 0]);
+        globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, '', (0 + col)), line, route, fonts.fontFiles[5], 255, 0, 0));
         if (timeTill.length === 1) { globalMode.buffer.push(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 255, 255, 255); }
         if (timeTill.length === 2) {
           if (globalMode.static.busPid.displayMode === 'countDown') {
-            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
-            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route + timeTill[0], (col + 1)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
+            globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0));
+            globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, route + timeTill[0], (col + 1)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255));
           } else if (globalMode.static.busPid.displayMode === 'time') {
-            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), departureTime, fonts.fontFiles[2], 0, 255, 0]);
+            globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), departureTime, fonts.fontFiles[2], 0, 255, 0));
           } else if (globalMode.static.busPid.displayMode === 'delay') {
-            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), delayDisplay, fonts.fontFiles[2], delayDisplayColours[0], delayDisplayColours[1], delayDisplayColours[2]]);
+            globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), delayDisplay, fonts.fontFiles[2], delayDisplayColours[0], delayDisplayColours[1], delayDisplayColours[2]));
           }
         }
         if (timeTill.length === 4) {
           if (globalMode.static.busPid.displayMode === 'countDown') {
-            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0]);
-            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}`, (col)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255]);
-            // globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}${timeTill[1]}`, (col)), line, timeTill[2], fonts.fontFiles[5], 0, 255, 0]);
-            // globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]} ${timeTill[1]} ${timeTill[2]}`, (col - 1.5)), (line + 3), timeTill[3], fonts.fontFiles[2], 255, 255, 255]);
+            globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), line, timeTill[0], fonts.fontFiles[5], 0, 255, 0));
+            globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}`, (col)), (line + 3), timeTill[1], fonts.fontFiles[2], 255, 255, 255));
+            // globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]}${timeTill[1]}`, (col)), line, timeTill[2], fonts.fontFiles[5], 0, 255, 0));
+            // globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, `${route} ${timeTill[0]} ${timeTill[1]} ${timeTill[2]}`, (col - 1.5)), (line + 3), timeTill[3], fonts.fontFiles[2], 255, 255, 255));
           } else if (globalMode.static.busPid.displayMode === 'time') {
-            globalMode.buffer.push([fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), departureTime, fonts.fontFiles[2], 0, 255, 0]);
+            globalMode.buffer.push(new BufferItem(fonts.getFontDimentionsSpacing('x', 5, route, (0.5 + col)), (line + 3), departureTime, fonts.fontFiles[2], 0, 255, 0));
           }
         }
 
