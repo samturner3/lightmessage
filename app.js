@@ -36,6 +36,8 @@ globalMode = {
       temp: true,
       conditions: false,
       forecast: true,
+      forecastShort: true,
+      forecastLong: true,
     },
     lux: false,
     values: {
@@ -50,10 +52,17 @@ globalMode = {
     weather: {
       error: true,
       lastUpdated: null,
+      forecastShortLastUpdated: null,
+      forecastLongLastUpdated: null,
       forecastLastScrolled: null,
       outSideTemp: null,
       outSideConditions: null,
       outSideWeatherLocation: null,
+      forecastLong: null,
+      forecastShort: {
+        text: null,
+        probability: null,
+      },
     },
     busPid: {
       error: true,

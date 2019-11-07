@@ -12,6 +12,7 @@ const clockUTCLoop = require('./clockUTCLoop');
 const dateLoop = require('./dateLoop');
 const updateTemp = require('./updateTemp');
 const updateStaticWeather = require('./signFunctions/updateStaticweather');
+const getForecastWeather = require('./signFunctions/getForecastWeather');
 const scrollForecastInPlace = require('./scrollForecastInPlace');
 
 const updateLoop = function updateLoop() { // Main loop function (modes)
@@ -50,5 +51,6 @@ module.exports = async function tick() {
   updateTemp();
   updateLoop();
   updateStaticWeather();
+  getForecastWeather();
   // updateLux()
 };
