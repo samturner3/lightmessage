@@ -25,11 +25,12 @@ globalMode = {
     message: null,
     loop: null,
   },
-  busPIDMode: true,
+  busPIDMode: false,
   tick: {
     enabled: true,
     clock: true,
     UtcClock: true,
+    date: true,
     temp: true,
     weather: {
       temp: true,
@@ -39,6 +40,7 @@ globalMode = {
     values: {
       tickTime: null,
       tickTimeUTC: null,
+      tickDate: null,
       tickTemp: null,
       tickLux: null,
     },

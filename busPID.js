@@ -145,11 +145,11 @@ module.exports = async function busPID() {
             const createdTime = moment.unix(alerts[x].createdTime);
             console.log(alerts[x]);
             await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - ${createdTime.format('h:mma')} - ${alerts[x].description}`, 70, 0, 12, 10);
-          // await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - (${moment.unix(alerts[x].activePeriods.start).format('h:mma')} - ${moment.unix(alerts[x].activePeriods.end).format('h:mma')}) ${alerts[x].description}`, 70, 0, 12, 10);=
+            // await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - (${moment.unix(alerts[x].activePeriods.start).format('h:mma')} - ${moment.unix(alerts[x].activePeriods.end).format('h:mma')}) ${alerts[x].description}`, 70, 0, 12, 10);=
+            await scrollMessageInPlace(`${moment().format('h:mma')}`, 70, 0, 12, 10, 15, false, true, 255, 255, 0);
           }
-          await scrollMessageInPlace(`${moment().format('h:mma')}`, 70, 0, 12, 10, 15, false, true, 255, 255, 0);
-          globalMode.static.busPid.alertsLastScrolled = moment().unix();
         }
+        globalMode.static.busPid.alertsLastScrolled = moment().unix();
         globalMode.buffer = [];
       } else {
         globalMode.led.drawText(60, 0, moment().format('h:mma'), fonts.fontFiles[15], 255, 255, 0);
