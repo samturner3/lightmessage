@@ -3,7 +3,7 @@ const drawBuffer = require('./drawBuffer');
 const drawStaticMessages = require('./drawStaticMessages');
 
 
-module.exports = async function scrollMessageInPlace(message, placeEndX = 50, y = 12, visibleLengthChars = 6, speed = 10, fontIndex = 5, includeStaticMessages = false, executeBuffer = true, r = 0, g = 255, b = 0) {
+module.exports = async function scrollMessageInPlace(message, placeEndX = 55, y = 12, visibleLengthChars = 4, speed = 10, fontIndex = 5, includeStaticMessages = false, executeBuffer = true, r = 0, g = 255, b = 0) {
   const startX = placeEndX + visibleLengthChars * fonts.getFontDimentions(fontIndex).x;
   const endXa = Math.abs((message.length + 1 + visibleLengthChars) * fonts.getFontDimentions(fontIndex).x) * -1;
   const endX = placeEndX + endXa;

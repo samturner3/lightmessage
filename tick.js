@@ -17,7 +17,7 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
     if (globalMode.messages.message && globalMode.messages.newMessage) { // Scroll Message
       for (let i = 0; i < globalMode.messages.loop; i++) {
         drawStaticMessages();
-        await scrollMessageInPlace(globalMode.messages.message, 5);
+        await scrollMessageInPlace(globalMode.messages.message);
         globalMode.buffer = [];
       }
       globalMode.messages.newMessage = false;
