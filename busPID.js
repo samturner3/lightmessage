@@ -78,7 +78,7 @@ const getBusData = async function getBusData() {
 module.exports = async function busPID() {
   const startX = globalMode.led.getWidth();
   const endX = 0;
-  const speed = 1500; // in millasecondsd
+  const speed = 0; // in millasecondsd
 
   function delay() {
     return new Promise((resolve) => setTimeout(resolve, speed));
