@@ -3,7 +3,11 @@ const moment = require('moment');
 module.exports = function dateLoop() {
   setTimeout(async () => {
     // console.log('time updated')
-    globalMode.tick.values.tickDate = moment().format('dddd Do MMM YYYY');
+    if (moment().format('dddd').length > 6) {
+      globalMode.tick.values.tickDate = moment().format('dddd Do MMM YY');
+    } else {
+      globalMode.tick.values.tickDate = moment().format('dddd Do MMM YYYY');
+    }
     if (globalMode.tick.date) {
       dateLoop();
     } else globalMode.tick.values.tickDate = undefined;

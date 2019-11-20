@@ -19,8 +19,8 @@ module.exports = function drawStaticMessages() {
     globalMode.buffer.push(new BufferItem((fonts.getFontDimentionsSpacing('x', 5, globalMode.tick.values.tickTimeUTC, 0.5)), 15, 'UTC', fonts.fontFiles[1], 100, 10, 255));
   }
   if (globalMode.tick.values.tickDate) globalMode.buffer.push(new BufferItem(0, 21, globalMode.tick.values.tickDate, fonts.fontFiles[5], 0, 255, 100));
-  if (globalMode.tick.values.tickTemp) {
-    globalMode.buffer.push(new BufferItem((screenWidth - (globalMode.tick.values.tickTemp.length * fonts.getFontDimentions(5).x) - (3 * fonts.getFontDimentions(1).x)), 4, 'in ', fonts.fontFiles[1], 100, 10, 255));
+  if (globalMode.tick.values.tickTemp && globalMode.tick.temp) {
+    // globalMode.buffer.push(new BufferItem((screenWidth - (globalMode.tick.values.tickTemp.length * fonts.getFontDimentions(5).x) - (3 * fonts.getFontDimentions(1).x)), 4, 'in ', fonts.fontFiles[1], 100, 10, 255));
     globalMode.buffer.push(new BufferItem((screenWidth - (globalMode.tick.values.tickTemp.length * fonts.getFontDimentions(5).x)), 0, globalMode.tick.values.tickTemp, fonts.fontFiles[5], 0, 0, 255));
   }
   if (globalMode.tick.lux) {

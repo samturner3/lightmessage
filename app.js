@@ -17,7 +17,7 @@ const app = express();
 globalMode = {
   buffer: [],
   mode: 'off',
-  brightness: 100,
+  brightness: 20,
   led: null,
   luxAuto: false,
   messages: {
@@ -29,15 +29,15 @@ globalMode = {
   tick: {
     enabled: true,
     clock: true,
-    UtcClock: true,
-    date: true,
+    UtcClock: false,
+    date: false,
     temp: true,
     weather: {
-      temp: true,
+      temp: false,
       conditions: false,
-      forecast: true,
-      forecastShort: true,
-      forecastLong: true,
+      forecast: false,
+      forecastShort: false,
+      forecastLong: false,
     },
     lux: false,
     values: {
@@ -50,7 +50,7 @@ globalMode = {
   },
   static: {
     weather: {
-      error: true,
+      error: false,
       lastUpdated: null,
       forecastShortLastUpdated: null,
       forecastLongLastUpdated: null,

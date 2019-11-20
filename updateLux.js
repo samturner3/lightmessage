@@ -12,7 +12,7 @@ module.exports = async function updateLux() {
     (cb) => {
       i2c1.readWord(LUX_ADDR, 0x04, (err, rawLight) => {
         if (err) return cb(err);
-        //   console.log('rawLight: ' + rawLight);
+        console.log(`rawLight: ${rawLight}`);
         console.log('lux updated', rawLight);
         globalMode.tick.values.tickLux = rawLight;
         cb(null);
