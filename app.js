@@ -31,7 +31,7 @@ globalMode = {
     clock: true,
     UtcClock: false,
     date: false,
-    temp: true,
+    temp: false,
     weather: {
       temp: false,
       conditions: false,

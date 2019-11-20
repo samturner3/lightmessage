@@ -7,8 +7,8 @@ const scrollMessageInPlace = require('./scrollMessageInPlace');
 const drawBuffer = require('./drawBuffer');
 const BufferItem = require('./bufferItem');
 
-// const stopId = '2035193'; // Home bus
-const stopId = '200073'; // St James
+const stopId = '2035193'; // Home bus
+// const stopId = '200073'; // St James
 // const stopId = '2000392'; // Townhall platform 2
 let busData;
 let alerts;
@@ -78,7 +78,7 @@ const getBusData = async function getBusData() {
 module.exports = async function busPID() {
   const startX = globalMode.led.getWidth();
   const endX = 0;
-  const speed = 3000; // in millasecondsd
+  const speed = 1500; // in millasecondsd
 
   function delay() {
     return new Promise((resolve) => setTimeout(resolve, speed));
@@ -140,11 +140,12 @@ module.exports = async function busPID() {
       }
     }
     if (alerts.length >= 1) {
-      if (globalMode.static.busPid.alertsLastScrolled === null || Math.abs(moment().unix() - globalMode.static.busPid.alertsLastScrolled > 120)) { // in seconds
+      if (globalMode.static.busPid.alertsLastScrolled === null || Math.abs(moment().unix() - globalMode.static.busPid.alertsLastScrolled > 3600)) { // in seconds
+      // if (globalMode.static.busPid.alertsLastScrolled === null) { // scroll just once on start
         for (let x = 0; x < alerts.length; x++) {
-          if (alerts[x].active === true) {
+          if (alerts[x].active === true && moment.unix - moment.unix(alerts[x].createdTime) < 7200) { // Only if alert is <2h old
             const createdTime = moment.unix(alerts[x].createdTime);
-            console.log(alerts[x]);
+            // console.log(alerts[x]);
             await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - ${createdTime.format('h:mma')} - ${alerts[x].description}`, 70, 0, 12, 10);
             // await scrollMessageInPlace(`${alerts[x].header.toUpperCase()} - (${moment.unix(alerts[x].activePeriods.start).format('h:mma')} - ${moment.unix(alerts[x].activePeriods.end).format('h:mma')}) ${alerts[x].description}`, 70, 0, 12, 10);=
             await scrollMessageInPlace(`${moment().format('h:mma')}`, 70, 0, 12, 10, 15, false, true, 255, 255, 0);
