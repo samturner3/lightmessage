@@ -92,7 +92,9 @@ module.exports = async function busPID() {
     let sortedPass = 0;
     if (globalMode.static.busPid.routeTimeDisplayChangedLast === null || Math.abs(moment().unix() - globalMode.static.busPid.routeTimeDisplayChangedLast > 1)) {
       console.log('displayMode', globalMode.static.busPid.displayMode);
-      if (globalMode.static.busPid.displayMode === 'time') { globalMode.static.busPid.displayMode = 'countDown'; } else if (globalMode.static.busPid.displayMode === 'countDown') { globalMode.static.busPid.displayMode = 'delay'; } else { globalMode.static.busPid.displayMode = 'time'; }
+      if (globalMode.static.busPid.displayMode === 'time') { globalMode.static.busPid.displayMode = 'countDown'; } else { globalMode.static.busPid.displayMode = 'time'; }
+      // if (globalMode.static.busPid.displayMode === 'time') { globalMode.static.busPid.displayMode = 'countDown'; } else if (globalMode.static.busPid.displayMode === 'countDown') { globalMode.static.busPid.displayMode = 'delay'; } else { globalMode.static.busPid.displayMode = 'time'; }
+
       // if (globalMode.static.busPid.displayMode === 1) { globalMode.static.busPid.displayMode = 2; } else if (globalMode.static.busPid.displayMode === 2) { globalMode.static.busPid.displayMode = 3; } else if (globalMode.static.busPid.displayMode === 3) { globalMode.static.busPid.displayMode = 1; } else globalMode.static.busPid.displayMode = 1;
       globalMode.static.busPid.routeTimeDisplayChangedLast = moment().unix();
     }
