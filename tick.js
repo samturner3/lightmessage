@@ -10,6 +10,7 @@ const drawBuffer = require('./drawBuffer');
 const clockLoop = require('./clockLoop');
 const clockUTCLoop = require('./clockUTCLoop');
 const dateLoop = require('./dateLoop');
+const covidLoop = require('./covidCounter');
 const updateTemp = require('./updateTemp');
 const updateLux = require('./updateLux');
 const updateStaticWeather = require('./signFunctions/updateStaticweather');
@@ -21,9 +22,9 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
     globalMode.led.clear();
     if (globalMode.messages.message && globalMode.messages.newMessage) { // Scroll Message
       for (let i = 0; i < globalMode.messages.loop; i++) {
-        drawStaticMessages();
+        // drawStaticMessages();
         // await scrollMessageInPlace(globalMode.messages.message);
-        await scrollAMessage(globalMode.messages.message, 10, 0, false);
+        await scrollAMessage(globalMode.messages.message, 10, 20, false);
         globalMode.buffer = [];
       }
       globalMode.messages.newMessage = false;
@@ -50,6 +51,7 @@ module.exports = async function tick() {
   clockLoop();
   clockUTCLoop();
   dateLoop();
+  covidLoop();
   updateTemp();
   updateLoop();
   updateStaticWeather();

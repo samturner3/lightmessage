@@ -18,6 +18,13 @@ router.post('/', (req, res, next) => {
   } else {
     globalMode.busPIDMode = false;
   }
+  if (req.body.dateMode) {
+    if (req.body.dateMode === 'on') {
+      globalMode.tick.date = true;
+    } else {
+      globalMode.tick.date = false;
+    }
+  }
 
   // if (req.body.ModeChangeButton === 'Clock') {
   //   globalMode.tick.clock = true;

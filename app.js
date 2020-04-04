@@ -32,6 +32,7 @@ globalMode = {
     UtcClock: false,
     date: true,
     dateBottom: false,
+    covidCounter: true,
     temp: false,
     weather: {
       temp: false,
@@ -47,6 +48,7 @@ globalMode = {
       tickDate: null,
       tickTemp: null,
       tickLux: null,
+      tickCovidCounter: null,
     },
   },
   static: {

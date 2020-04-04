@@ -17,7 +17,7 @@ module.exports = async function scrollAMessage(message, speed = 5, y = 12, inclu
       if (includeStaticMessages) {
         drawStaticMessages();
       }
-      globalMode.led.drawText(x, y, message, fonts.fontFiles[21], 255, 255, 65);
+      globalMode.led.drawText(x, y, message, fonts.fontFiles[5], 0, 255, 0);
       globalMode.led.update();
       await delay(speed);
     }

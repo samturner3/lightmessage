@@ -10,10 +10,9 @@ module.exports = function dateLoop() {
         globalMode.tick.values.tickDate = moment().format('dddd Do MMM YYYY');
       }
     } else {
-      globalMode.tick.values.tickDate = [moment().format('dddd'), moment().format('Do MMM YYYY')];
+      globalMode.tick.values.tickDate = [moment().format('dddd'), moment().format('Do MMMM')];
     }
-    if (globalMode.tick.date) {
-      dateLoop();
-    } else globalMode.tick.values.tickDate = undefined;
+    if (!globalMode.tick.date) globalMode.tick.values.tickDate = undefined;
+    dateLoop();
   }, 1000);
 };
