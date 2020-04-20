@@ -1,7 +1,7 @@
 // Run something every second
-const moment = require('moment');
+// const moment = require('moment');
 const scrollAMessage = require('./scrollAMessage');
-const scrollMessageInPlace = require('./scrollMessageInPlace');
+// const scrollMessageInPlace = require('./scrollMessageInPlace');
 const busPID = require('./busPID');
 const drawStaticMessages = require('./drawStaticMessages');
 const drawBuffer = require('./drawBuffer');
@@ -11,11 +11,11 @@ const clockLoop = require('./clockLoop');
 const clockUTCLoop = require('./clockUTCLoop');
 const dateLoop = require('./dateLoop');
 const covidLoop = require('./covidCounter');
-const updateTemp = require('./updateTemp');
+// const updateTemp = require('./updateTemp');
 const updateLux = require('./updateLux');
-const updateStaticWeather = require('./signFunctions/updateStaticweather');
-const getForecastWeather = require('./signFunctions/getForecastWeather');
-const scrollForecastInPlace = require('./scrollForecastInPlace');
+// const updateStaticWeather = require('./signFunctions/updateStaticweather');
+// const getForecastWeather = require('./signFunctions/getForecastWeather');
+// const scrollForecastInPlace = require('./scrollForecastInPlace');
 
 const updateLoop = function updateLoop() { // Main loop function (modes)
   setTimeout(async () => {
@@ -35,7 +35,7 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
       globalMode.led.clear();
       globalMode.buffer = [];
       drawStaticMessages();
-      scrollForecastInPlace();
+      //   scrollForecastInPlace();
       drawBuffer();
       globalMode.led.update();
     }
@@ -52,9 +52,9 @@ module.exports = async function tick() {
   clockUTCLoop();
   dateLoop();
   covidLoop();
-  updateTemp();
+//   updateTemp();
   updateLoop();
-  updateStaticWeather();
-  getForecastWeather();
+//   updateStaticWeather();
+//   getForecastWeather();
   // updateLux();
 };
