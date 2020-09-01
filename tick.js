@@ -1,7 +1,7 @@
 // Run something every second
 // const moment = require('moment');
 const scrollAMessage = require('./scrollAMessage');
-// const scrollMessageInPlace = require('./scrollMessageInPlace');
+const scrollMessageInPlace = require('./scrollMessageInPlace');
 const busPID = require('./busPID');
 const drawStaticMessages = require('./drawStaticMessages');
 const drawBuffer = require('./drawBuffer');
@@ -23,8 +23,8 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
     if (globalMode.messages.message && globalMode.messages.newMessage) { // Scroll Message
       for (let i = 0; i < globalMode.messages.loop; i++) {
         // drawStaticMessages();
-        // await scrollMessageInPlace(globalMode.messages.message);
-        await scrollAMessage(globalMode.messages.message, 10, 20, false);
+        await scrollMessageInPlace(globalMode.messages.message, 0, 24, 40, 10, 1, true, true, 0, 255, 100);
+        // await scrollAMessage(globalMode.messages.message, 10, 20, false);
         globalMode.buffer = [];
       }
       globalMode.messages.newMessage = false;

@@ -3,7 +3,7 @@ const drawBuffer = require('./drawBuffer');
 const drawStaticMessages = require('./drawStaticMessages');
 
 
-module.exports = async function scrollMessageInPlace(message, placeEndX = 55, y = 12, visibleLengthChars = 4, speed = 10, fontIndex = 5, includeStaticMessages = false, executeBuffer = true, r = 0, g = 255, b = 0) {
+module.exports = async function scrollMessageInPlace(message, placeEndX = 55, y = 12, visibleLengthChars = 4, speed = 10, fontIndex = 5, overwriteExistingPlace = false, executeBuffer = true, r = 0, g = 255, b = 0) {
   const startX = placeEndX + visibleLengthChars * fonts.getFontDimentions(fontIndex).x;
   const endXa = Math.abs((message.length + 1 + visibleLengthChars) * fonts.getFontDimentions(fontIndex).x) * -1;
   const endX = placeEndX + endXa;
@@ -27,11 +27,22 @@ module.exports = async function scrollMessageInPlace(message, placeEndX = 55, y 
         removed++;
       }
       globalMode.led.clear();
-      if (includeStaticMessages === true) {
-        drawStaticMessages();
-      }
+      // if (includeStaticMessages === true) {
+      //   drawStaticMessages();
+      // }
       if (executeBuffer === true) {
         drawBuffer();
+      }
+      if (overwriteExistingPlace === true) {
+        // find area where this message will be scrolled
+        // for now if on same y
+        for (let i = 0; i < globalMode.buffer.length; i++) {
+          if (globalMode.buffer[i].y === y) {
+            globalMode.buffer.splice(i, 1);
+          }
+        }
+        // future: caculate entire area, ie caculate font size etc
+        // remove that area from buffer before scrolling this message
       }
       globalMode.led.drawText(x, y, mystring, fonts.fontFiles[fontIndex], r, g, b);
       globalMode.led.update();
