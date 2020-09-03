@@ -1,9 +1,12 @@
+require('dotenv').config();
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const Matrix = require('easybotics-rpi-rgb-led-matrix');
+// Mqtt
+const mqtt = require('mqtt');
 
 const indexRouter = require('./routes/index');
 const lightMessageRouter = require('./routes/lightmessage');
@@ -11,6 +14,17 @@ const modeChangeRouter = require('./routes/modeChange');
 const brightnessChangeRouter = require('./routes/brightnessChange');
 
 const tick = require('./tick');
+
+const topicsToSubscribeTo = [`${process.env.MQTT_SIGN_ID}/brightness`];
+
+const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`);
+
+mqttClient.on('connect', () => {
+  mqttClient.subscribe(topicsToSubscribeTo, (err) => {
+    if (err) console.error(err);
+    else console.log('Connected to MQTT');
+  });
+});
 
 const app = express();
 
@@ -97,6 +111,20 @@ app.use('/lightmessage', lightMessageRouter);
 app.use('/modeChange', modeChangeRouter);
 app.use('/brightnessChange', brightnessChangeRouter);
 app.use('/brightnessChange', brightnessChangeRouter);
+
+// MQTT Routes
+mqttClient.on('message', (topic, message) => {
+  console.log('Got Message:', topic.toString(), message.toString());
+  switch (topic.toString()) {
+    case `${process.env.MQTT_SIGN_ID}/brightness`:
+      // console.log('set brightness to', message.toString());
+      globalMode.brightness = parseInt(message.toString(), 10);
+      globalMode.led.brightness(globalMode.brightness);
+      break;
+    default:
+      console.warn('unknown mqtt message topic:', topic.toString());
+  }
+});
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
