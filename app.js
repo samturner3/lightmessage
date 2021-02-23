@@ -17,12 +17,18 @@ const tick = require('./tick');
 
 const topicsToSubscribeTo = [`${process.env.MQTT_SIGN_ID}/brightness`];
 
-const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`);
+const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`,{
+		username: process.env.MQTT_USERNAME,
+		password: process.env.MQTT_PASSWORD,
+	});
 
 mqttClient.on('connect', () => {
   mqttClient.subscribe(topicsToSubscribeTo, (err) => {
     if (err) console.error(err);
-    else console.log('Connected to MQTT');
+    else {
+	console.log('Connected to MQTT. Subscribed to ', topicsToSubscribeTo);
+	mqttClient.publish(`${process.env.MQTT_SIGN_ID}/status`, `${process.env.MQTT_SIGN_ID} connected`)
+	}
   });
 });
 
@@ -117,7 +123,7 @@ mqttClient.on('message', (topic, message) => {
   console.log('Got Message:', topic.toString(), message.toString());
   switch (topic.toString()) {
     case `${process.env.MQTT_SIGN_ID}/brightness`:
-      // console.log('set brightness to', message.toString());
+      console.log('set brightness to', message.toString());
       globalMode.brightness = parseInt(message.toString(), 10);
       globalMode.led.brightness(globalMode.brightness);
       break;
