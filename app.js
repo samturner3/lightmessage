@@ -1,23 +1,25 @@
-require("dotenv").config();
-const createError = require("http-errors");
-const express = require("express");
-const path = require("path");
-const cookieParser = require("cookie-parser");
-const logger = require("morgan");
-const Matrix = require("easybotics-rpi-rgb-led-matrix");
+require('dotenv').config();
+const createError = require('http-errors');
+const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+const Matrix = require('easybotics-rpi-rgb-led-matrix');
 // Mqtt
-const mqtt = require("mqtt");
+const mqtt = require('mqtt');
 
-const indexRouter = require("./routes/index");
-const lightMessageRouter = require("./routes/lightmessage");
-const modeChangeRouter = require("./routes/modeChange");
-const brightnessChangeRouter = require("./routes/brightnessChange");
+const indexRouter = require('./routes/index');
+const lightMessageRouter = require('./routes/lightmessage');
+const modeChangeRouter = require('./routes/modeChange');
+const brightnessChangeRouter = require('./routes/brightnessChange');
 
-const tick = require("./tick");
+const tick = require('./tick');
 
 const topicsToSubscribeTo = [
   `${process.env.MQTT_SIGN_ID}/brightness`,
   `${process.env.MQTT_SIGN_ID}/busPIDMode`,
+  `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`,
+  // `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
 ];
 
 const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`, {
@@ -25,15 +27,27 @@ const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`, {
   password: process.env.MQTT_PASSWORD,
 });
 
-mqttClient.on("connect", () => {
+mqttClient.on('connect', () => {
+  mqttClient.publish(
+    `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/config`,
+    JSON.stringify({
+      '~': `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}`,
+      name: process.env.MQTT_SIGN_ID,
+      unique_id: process.env.MQTT_SIGN_ID,
+      cmd_t: '~/set',
+      stat_t: '~/state',
+      schema: 'json',
+      brightness: true,
+    }),
+  );
+  mqttClient.publish(
+    `${process.env.MQTT_SIGN_ID}/status`,
+    `${process.env.MQTT_SIGN_ID} connected`,
+  );
   mqttClient.subscribe(topicsToSubscribeTo, (err) => {
     if (err) console.error(err);
     else {
-      console.log("Connected to MQTT. Subscribed to ", topicsToSubscribeTo);
-      mqttClient.publish(
-        `${process.env.MQTT_SIGN_ID}/status`,
-        `${process.env.MQTT_SIGN_ID} connected`
-      );
+      console.log('Connected to MQTT. Subscribed to ', topicsToSubscribeTo);
     }
   });
 });
@@ -42,7 +56,7 @@ const app = express();
 
 globalMode = {
   buffer: [],
-  mode: "off",
+  mode: 'off',
   brightness: 20,
   led: null,
   luxAuto: false,
@@ -99,7 +113,7 @@ globalMode = {
       fetched: false,
       alertsLastScrolled: null,
       routeTimeDisplayChangedLast: null,
-      displayMode: "time",
+      displayMode: 'time',
     },
   },
 };
@@ -110,43 +124,43 @@ globalMode.led = new Matrix(
   1,
   4,
   globalMode.brightness,
-  "adafruit-hat-pwm"
+  'adafruit-hat-pwm',
 ); // this might be different for you
 
 tick();
 
 // view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "pug");
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'pug');
 
-app.use(logger("dev"));
+app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use("/", indexRouter);
-app.use("/lightmessage", lightMessageRouter);
-app.use("/modeChange", modeChangeRouter);
-app.use("/brightnessChange", brightnessChangeRouter);
-app.use("/brightnessChange", brightnessChangeRouter);
+app.use('/', indexRouter);
+app.use('/lightmessage', lightMessageRouter);
+app.use('/modeChange', modeChangeRouter);
+app.use('/brightnessChange', brightnessChangeRouter);
+app.use('/brightnessChange', brightnessChangeRouter);
 
 // MQTT Routes
-mqttClient.on("message", (topic, message) => {
-  console.log("Got Message:", topic.toString(), message.toString());
+mqttClient.on('message', (topic, message) => {
+  console.log('Got Message:', topic.toString(), message.toString());
   switch (topic.toString()) {
     case `${process.env.MQTT_SIGN_ID}/brightness`:
-      console.log("set brightness to", message.toString());
+      console.log('set brightness to', message.toString());
       globalMode.brightness = parseInt(message.toString(), 10);
       globalMode.led.brightness(globalMode.brightness);
       break;
     case `${process.env.MQTT_SIGN_ID}/busPIDMode`:
-      console.log("set busPIDMode to", message.toString());
-      if (message.toString() === "true") globalMode.busPIDMode = true;
-      else if (message.toString() === "false") globalMode.busPIDMode = false;
+      console.log('set busPIDMode to', message.toString());
+      if (message.toString() === 'true') globalMode.busPIDMode = true;
+      else if (message.toString() === 'false') globalMode.busPIDMode = false;
       break;
     default:
-      console.warn("unknown mqtt message topic:", topic.toString());
+      console.warn('unknown mqtt message topic:', topic.toString());
   }
 });
 
@@ -159,11 +173,11 @@ app.use((req, res, next) => {
 app.use((err, req, res) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
-  res.locals.error = req.app.get("env") === "development" ? err : {};
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error");
+  res.render('error');
 });
 
 module.exports = app;
