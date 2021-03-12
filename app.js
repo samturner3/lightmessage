@@ -19,7 +19,7 @@ const topicsToSubscribeTo = [
   `${process.env.MQTT_SIGN_ID}/brightness`,
   `${process.env.MQTT_SIGN_ID}/busPIDMode`,
   `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`,
-  `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
+  // `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
 ];
 
 const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`, {
@@ -30,7 +30,7 @@ const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`, {
 mqttClient.on('connect', () => {
   mqttClient.publish(
     `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/config`,
-    {
+    JSON.stringify({
       '~': `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}`,
       name: process.env.MQTT_SIGN_ID,
       unique_id: process.env.MQTT_SIGN_ID,
@@ -38,7 +38,7 @@ mqttClient.on('connect', () => {
       stat_t: '~/state',
       schema: 'json',
       brightness: true,
-    },
+    }),
   );
   mqttClient.publish(
     `${process.env.MQTT_SIGN_ID}/status`,
