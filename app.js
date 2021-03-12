@@ -16,8 +16,8 @@ const brightnessChangeRouter = require('./routes/brightnessChange');
 const tick = require('./tick');
 
 const topicsToSubscribeTo = [
-  `${process.env.MQTT_SIGN_ID}/brightness`,
-  `${process.env.MQTT_SIGN_ID}/busPIDMode`,
+  // `${process.env.MQTT_SIGN_ID}/brightness`,
+  // `${process.env.MQTT_SIGN_ID}/busPIDMode`,
   `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`,
   // `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
 ];
@@ -147,22 +147,21 @@ app.use('/brightnessChange', brightnessChangeRouter);
 
 // MQTT Routes
 mqttClient.on('message', (topic, message) => {
-  console.log('Got Message:', topic.toString(), message.toString());
+  const messageJson = JSON.parse(message);
   switch (topic.toString()) {
-    case `${process.env.MQTT_SIGN_ID}/brightness`:
-      console.log('set brightness to', message.toString());
-      globalMode.brightness = parseInt(message.toString(), 10);
-      globalMode.led.brightness(globalMode.brightness);
-      break;
-    case `${process.env.MQTT_SIGN_ID}/busPIDMode`:
-      console.log('set busPIDMode to', message.toString());
-      if (message.toString() === 'true') globalMode.busPIDMode = true;
-      else if (message.toString() === 'false') globalMode.busPIDMode = false;
-      break;
+    // case `${process.env.MQTT_SIGN_ID}/brightness`:
+    //   console.log('set brightness to', message.toString());
+    //   globalMode.brightness = parseInt(message.toString(), 10);
+    //   globalMode.led.brightness(globalMode.brightness);
+    //   break;
+    // case `${process.env.MQTT_SIGN_ID}/busPIDMode`:
+    //   console.log('set busPIDMode to', message.toString());
+    //   if (message.toString() === 'true') globalMode.busPIDMode = true;
+    //   else if (message.toString() === 'false') globalMode.busPIDMode = false;
+    //   break;
     case `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`:
-      console.log('JSON.parse(message): ', JSON.parse(message));
-
-      // globalMode.brightness = parseInt(JSON.parse(message.brightness), 10);
+      // console.log('JSON.parse(message): ', JSON.parse(message));
+      if (messageJson.brightness) globalMode.brightness = parseInt(messageJson.brightness, 10);
 
       mqttClient.publish(
         `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
