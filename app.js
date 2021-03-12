@@ -161,7 +161,10 @@ mqttClient.on('message', (topic, message) => {
     //   break;
     case `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`:
       console.log('messageJson: ', messageJson);
-      if (messageJson.brightness) globalMode.brightness = messageJson.brightness;
+      if (messageJson.brightness) {
+        globalMode.brightness = messageJson.brightness;
+        globalMode.led.brightness(globalMode.brightness);
+      }
 
       mqttClient.publish(
         `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
