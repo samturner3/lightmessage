@@ -38,10 +38,10 @@ mqttClient.on('connect', () => {
       stat_t: '~/state',
       schema: 'json',
       brightness: true,
-      effect: true,
-      effect_command_topic: '~/set',
-      effect_list: ['normal', 'busPID'],
-      effect_state_topic: '~/state',
+      // effect: true,
+      // effect_command_topic: '~/set',
+      // effect_list: ['normal', 'busPID'],
+      // effect_state_topic: '~/state',
     }),
   );
   mqttClient.publish(
