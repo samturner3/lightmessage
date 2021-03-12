@@ -159,6 +159,17 @@ mqttClient.on('message', (topic, message) => {
       if (message.toString() === 'true') globalMode.busPIDMode = true;
       else if (message.toString() === 'false') globalMode.busPIDMode = false;
       break;
+    case `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`:
+      globalMode.brightness = parseInt(JSON.parse(message.brightness), 10);
+
+      mqttClient.publish(
+        `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
+        JSON.stringify({
+          state: 'ON',
+          brightness: globalMode.brightness,
+        }),
+      );
+      break;
     default:
       console.warn('unknown mqtt message topic:', topic.toString());
   }
