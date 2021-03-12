@@ -160,7 +160,7 @@ mqttClient.on('message', (topic, message) => {
     //   else if (message.toString() === 'false') globalMode.busPIDMode = false;
     //   break;
     case `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`:
-      // console.log('JSON.parse(message): ', JSON.parse(message));
+      console.log('messageJson: ', messageJson);
       if (messageJson.brightness) globalMode.brightness = parseInt(messageJson.brightness, 10);
 
       mqttClient.publish(
