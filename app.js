@@ -25,6 +25,7 @@ const topicsToSubscribeTo = [
 const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`, {
   username: process.env.MQTT_USERNAME,
   password: process.env.MQTT_PASSWORD,
+  retain: true,
 });
 
 mqttClient.on('connect', () => {
