@@ -25,7 +25,6 @@ const topicsToSubscribeTo = [
 const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`, {
   username: process.env.MQTT_USERNAME,
   password: process.env.MQTT_PASSWORD,
-  retain: true,
 });
 
 mqttClient.on('connect', () => {
@@ -43,11 +42,12 @@ mqttClient.on('connect', () => {
       // effect_command_topic: '~/set',
       // effect_list: ['normal', 'busPID'],
       // effect_state_topic: '~/state',
-    }),
+    }), { retain: true },
   );
   mqttClient.publish(
     `${process.env.MQTT_SIGN_ID}/status`,
     `${process.env.MQTT_SIGN_ID} connected`,
+    { retain: true },
   );
   mqttClient.subscribe(topicsToSubscribeTo, (err) => {
     if (err) console.error(err);
@@ -176,7 +176,7 @@ mqttClient.on('message', (topic, message) => {
         JSON.stringify({
           state: 'ON',
           brightness: globalMode.brightness,
-        }),
+        }), { retain: true },
       );
       break;
     default:
