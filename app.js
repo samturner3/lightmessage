@@ -77,7 +77,7 @@ globalMode = {
     UtcClock: false,
     date: true,
     dateBottom: false,
-    covidCounter: true,
+    covidCounter: false,
     temp: false,
     weather: {
       temp: false,
