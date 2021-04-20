@@ -11,6 +11,7 @@ const clockLoop = require('./clockLoop');
 const clockUTCLoop = require('./clockUTCLoop');
 const dateLoop = require('./dateLoop');
 const covidLoop = require('./covidCounter');
+const coinLoop = require('./coinTicker');
 // const updateTemp = require('./updateTemp');
 const updateLux = require('./updateLux');
 // const updateStaticWeather = require('./signFunctions/updateStaticweather');
@@ -49,10 +50,11 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
 
 module.exports = async function tick() {
   clockLoop();
-  clockUTCLoop();
+  // clockUTCLoop();
   dateLoop();
-  covidLoop();
-//   updateTemp();
+  // covidLoop();
+  coinLoop();
+  //   updateTemp();
   updateLoop();
 //   updateStaticWeather();
 //   getForecastWeather();

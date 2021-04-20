@@ -42,7 +42,8 @@ mqttClient.on('connect', () => {
       // effect_command_topic: '~/set',
       // effect_list: ['normal', 'busPID'],
       // effect_state_topic: '~/state',
-    }), { retain: true },
+    }),
+    { retain: true },
   );
   mqttClient.publish(
     `${process.env.MQTT_SIGN_ID}/status`,
@@ -78,6 +79,7 @@ globalMode = {
     date: true,
     dateBottom: false,
     covidCounter: false,
+    coinTicker: true,
     temp: false,
     weather: {
       temp: false,
@@ -94,6 +96,7 @@ globalMode = {
       tickTemp: null,
       tickLux: null,
       tickCovidCounter: null,
+      coinTicker: null,
     },
   },
   static: {
@@ -176,7 +179,8 @@ mqttClient.on('message', (topic, message) => {
         JSON.stringify({
           state: 'ON',
           brightness: globalMode.brightness,
-        }), { retain: true },
+        }),
+        { retain: true },
       );
       break;
     default:

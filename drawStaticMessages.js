@@ -31,6 +31,10 @@ module.exports = function drawStaticMessages() {
     // globalMode.buffer.push(new BufferItem((screenWidth - (globalMode.tick.values.tickTemp.length * fonts.getFontDimentions(5).x) - (3 * fonts.getFontDimentions(1).x)), 4, 'in ', fonts.fontFiles[1], 100, 10, 255));
     globalMode.buffer.push(new BufferItem(0, 24, globalMode.tick.values.tickCovidCounter, fonts.fontFiles[1], 0, 255, 0));
   }
+  if (globalMode.tick.values.coinTicker && globalMode.tick.coinTicker) {
+    // globalMode.buffer.push(new BufferItem((screenWidth - (globalMode.tick.values.tickTemp.length * fonts.getFontDimentions(5).x) - (3 * fonts.getFontDimentions(1).x)), 4, 'in ', fonts.fontFiles[1], 100, 10, 255));
+    globalMode.buffer.push(new BufferItem(0, 24, globalMode.tick.values.coinTicker, fonts.fontFiles[1], 0, 255, 0));
+  }
   if (globalMode.tick.values.tickTemp && globalMode.tick.temp) {
     // globalMode.buffer.push(new BufferItem((screenWidth - (globalMode.tick.values.tickTemp.length * fonts.getFontDimentions(5).x) - (3 * fonts.getFontDimentions(1).x)), 4, 'in ', fonts.fontFiles[1], 100, 10, 255));
     globalMode.buffer.push(new BufferItem((screenWidth - (globalMode.tick.values.tickTemp.length * fonts.getFontDimentions(5).x)), 0, globalMode.tick.values.tickTemp, fonts.fontFiles[5], 0, 0, 255));
