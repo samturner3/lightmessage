@@ -3,6 +3,7 @@
 const scrollAMessage = require('./scrollAMessage');
 const scrollMessageInPlace = require('./scrollMessageInPlace');
 const busPID = require('./busPID');
+const coinTickerDisplay = require('./coinTickerDisplay');
 const drawStaticMessages = require('./drawStaticMessages');
 const drawBuffer = require('./drawBuffer');
 
@@ -32,6 +33,8 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
     } else if (globalMode.busPIDMode) { // Bus PID mode
       await busPID();
       // globalMode.busPIDMode = false;
+    } else if (globalMode.coinLoop) {
+      await coinTickerDisplay();
     } else {
       globalMode.led.clear();
       globalMode.buffer = [];
@@ -53,7 +56,6 @@ module.exports = async function tick() {
   // clockUTCLoop();
   dateLoop();
   // covidLoop();
-  coinLoop();
   //   updateTemp();
   updateLoop();
 //   updateStaticWeather();

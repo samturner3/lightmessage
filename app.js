@@ -72,6 +72,7 @@ globalMode = {
     loop: null,
   },
   busPIDMode: false,
+  coinLoop: true,
   tick: {
     enabled: true,
     clock: true,
@@ -79,7 +80,6 @@ globalMode = {
     date: true,
     dateBottom: false,
     covidCounter: false,
-    coinTicker: true,
     temp: false,
     weather: {
       temp: false,
@@ -96,7 +96,6 @@ globalMode = {
       tickTemp: null,
       tickLux: null,
       tickCovidCounter: null,
-      coinTicker: null,
     },
   },
   static: {
