@@ -52,9 +52,9 @@ module.exports = async function tick() {
   clockUTCLoop();
   dateLoop();
   covidLoop();
-//   updateTemp();
+  // updateTemp();
   updateLoop();
-//   updateStaticWeather();
-//   getForecastWeather();
-  // updateLux();
+  // updateStaticWeather();
+  // getForecastWeather();
+  updateLux();
 };
