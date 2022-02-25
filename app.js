@@ -14,12 +14,13 @@ const modeChangeRouter = require('./routes/modeChange');
 const brightnessChangeRouter = require('./routes/brightnessChange');
 
 const tick = require('./tick');
+const scale = require('./helpers/scale');
 
 const topicsToSubscribeTo = [
-  // `${process.env.MQTT_SIGN_ID}/brightness`,
+  `${process.env.MQTT_SIGN_ID}/brightness`,
   // `${process.env.MQTT_SIGN_ID}/busPIDMode`,
   `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/set`,
-  // `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
+  `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
 ];
 
 const mqttClient = mqtt.connect(`mqtt://${process.env.MQTT_BROKER_IP}`, {
@@ -61,10 +62,10 @@ const app = express();
 
 globalMode = {
   buffer: [],
-  mode: 'off',
-  brightness: 20,
+  mode: 'ON',
+  brightness: 100,
   led: null,
-  luxAuto: true,
+  luxAuto: false,
   messages: {
     newMessage: false,
     message: null,
@@ -161,19 +162,32 @@ mqttClient.on('message', (topic, message) => {
       console.log('messageJson: ', messageJson);
       if (messageJson.brightness) {
         globalMode.brightness = messageJson.brightness;
-        globalMode.led.brightness(globalMode.brightness);
+        globalMode.led.brightness(scale(globalMode.brightness));
+        console.log('brightness updated. Mqtt value: ', globalMode.brightness, ' actual value: %', scale(globalMode.brightness));
+      }
+
+      if (messageJson.state) {
+        if (messageJson.state === 'ON') {
+          globalMode.mode = 'ON';
+          // globalMode.brightness = messageJson.brightness;
+          globalMode.led.brightness(scale(globalMode.brightness));
+        }
+        else if (messageJson.state === 'OFF') {
+          globalMode.mode = 'OFF';
+          globalMode.led.brightness(scale(0));
+        }
       }
 
       mqttClient.publish(
         `homeassistant/light/rpi-sign/${process.env.MQTT_SIGN_ID}/state`,
         JSON.stringify({
-          state: 'ON',
+          state: globalMode.mode,
           brightness: globalMode.brightness,
         }), { retain: true },
       );
       break;
     default:
-      console.warn('unknown mqtt message topic:', topic.toString());
+      // console.warn('unknown mqtt message topic:', topic.toString());
   }
 });
 
