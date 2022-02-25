@@ -1,3 +1,4 @@
+const moment = require('moment');
 const brightnessChangeLux = require('./brightnessChangeLux');
 const updateStaticWeather = require('./signFunctions/updateStaticweather');
 const BufferItem = require('./bufferItem');
@@ -13,14 +14,15 @@ module.exports = function drawStaticMessages() {
   }
 
   // Draw stuff
-  if (globalMode.tick.values.tickTime) globalMode.buffer.push(new BufferItem(0, 0, globalMode.tick.values.tickTime, fonts.fontFiles[15], 255, 0, 0));
+  if (globalMode.tick.values.tickTime) globalMode.buffer.push(new BufferItem(0, 0, globalMode.tick.values.tickTime, fonts.fontFiles[5], 0, 150, 150));
   if (globalMode.tick.values.tickTimeUTC) {
     globalMode.buffer.push(new BufferItem(0, 11, globalMode.tick.values.tickTimeUTC, fonts.fontFiles[5], 255, 0, 0));
     globalMode.buffer.push(new BufferItem((fonts.getFontDimentionsSpacing('x', 5, globalMode.tick.values.tickTimeUTC, 0.5)), 15, 'UTC', fonts.fontFiles[1], 100, 10, 255));
   }
   if (globalMode.tick.values.tickDate) {
     if (globalMode.tick.dateBottom) {
-      globalMode.buffer.push(new BufferItem(0, 21, globalMode.tick.values.tickDate, fonts.fontFiles[5], 0, 0, 255));
+      globalMode.buffer.push(new BufferItem(0, 10, moment().format('dddd'), fonts.fontFiles[5], 0, 0, 100));
+      globalMode.buffer.push(new BufferItem(0, 20, globalMode.tick.values.tickDate, fonts.fontFiles[5], 100, 0, 0));
     } else {
       // globalMode.buffer.push(new BufferItem(70, 0, 'Wednesday', fonts.fontFiles[1], 0, 50, 255));
       globalMode.buffer.push(new BufferItem(70, 0, globalMode.tick.values.tickDate[0], fonts.fontFiles[1], 0, 50, 255));

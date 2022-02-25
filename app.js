@@ -64,7 +64,7 @@ globalMode = {
   mode: 'off',
   brightness: 20,
   led: null,
-  luxAuto: false,
+  luxAuto: true,
   messages: {
     newMessage: false,
     message: null,
@@ -76,7 +76,7 @@ globalMode = {
     clock: true,
     UtcClock: false,
     date: true,
-    dateBottom: false,
+    dateBottom: true,
     covidCounter: false,
     temp: false,
     weather: {
@@ -123,14 +123,7 @@ globalMode = {
   },
 };
 
-globalMode.led = new Matrix(
-  32,
-  32,
-  1,
-  4,
-  globalMode.brightness,
-  'adafruit-hat-pwm',
-); // this might be different for you
+globalMode.led = new Matrix(32, 64, 1, 1, globalMode.brightness, 'adafruit-hat-pwm'); // this might be different for you
 
 tick();
 
