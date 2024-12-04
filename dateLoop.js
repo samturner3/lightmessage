@@ -5,9 +5,9 @@ module.exports = function dateLoop() {
     // console.log('time updated')
     if (globalMode.tick.dateBottom) {
       if (moment().format('dddd').length > 6) {
-        globalMode.tick.values.tickDate = moment().format('DD/MM/YY');
+        globalMode.tick.values.tickDate = moment().format('dddd Do MMM YY');
       } else {
-        globalMode.tick.values.tickDate = moment().format('DD/MM/YY');
+        globalMode.tick.values.tickDate = moment().format('dddd Do MMM YYYY');
       }
     } else {
       globalMode.tick.values.tickDate = [moment().format('dddd'), moment().format('Do MMMM')];

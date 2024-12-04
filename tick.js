@@ -5,7 +5,8 @@ const scrollMessageInPlace = require('./scrollMessageInPlace');
 const busPID = require('./busPID');
 const drawStaticMessages = require('./drawStaticMessages');
 const drawBuffer = require('./drawBuffer');
-
+const BufferItem = require('./bufferItem');
+const fonts = require('./fonts');
 
 const clockLoop = require('./clockLoop');
 const clockUTCLoop = require('./clockUTCLoop');
@@ -28,7 +29,14 @@ const updateLoop = function updateLoop() { // Main loop function (modes)
         globalMode.buffer = [];
       }
       globalMode.messages.newMessage = false;
-    } else if (globalMode.busPIDMode) { // Bus PID mode
+    }
+    // } else if (globalMode.messagesStatic.message !== '') { // Show static message id one exists
+    //     // console.log('should show now: ', globalMode.messagesStatic.message);
+    //     // globalMode.buffer.push(new BufferItem(0, 11, globalMode.messagesStatic.message, fonts.fontFiles[5], 255, 0, 0));
+    //     globalMode.buffer.push(new BufferItem(0, 20, globalMode.messagesStatic.message, fonts.fontFiles[15], 255, 0, 0));
+    // }  
+    
+    else if (globalMode.busPIDMode) { // Bus PID mode
       await busPID();
       // globalMode.busPIDMode = false;
     } else {
